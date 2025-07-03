@@ -23,8 +23,8 @@ export default function DriverSearching({ onDriverFound }) {
   }, [onDriverFound]);
 
   return (
-    <div className="w-full bg-gray-950 text-white rounded-xl shadow-lg p-10 min-h-[400px] flex flex-col items-center justify-center transition-all duration-500">
-     
+    <div className="w-full bg-transparent text-white rounded-xl shadow-lg p-10 min-h-[400px] flex flex-col items-center justify-center transition-all duration-500">
+
       {!showDriver && (
         <>
           <div className="animate-pulse bg-blue-100 p-6 rounded-full mb-6">
@@ -48,7 +48,7 @@ export default function DriverSearching({ onDriverFound }) {
         </>
       )}
 
-      
+
       {showDriver && <DriverFoundCard />}
     </div>
   );

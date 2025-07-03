@@ -1,10 +1,10 @@
 import { PhoneIcon, ChatBubbleOvalLeftIcon } from "@heroicons/react/24/solid";
-
+// we are importing these icons from the heroicons library
 export default function DriverFoundCard({ driver }) {
   return (
     <div className="bg-white rounded-xl shadow-xl p-6 max-w-md mx-auto mt-6">
       <h2 className="text-xl font-bold text-gray-800 mb-4">
-         Driver Found ✌️
+        Driver Found ✌️
       </h2>
 
       <div className="flex items-center mb-4">

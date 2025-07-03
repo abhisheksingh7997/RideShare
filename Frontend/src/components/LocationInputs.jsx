@@ -1,7 +1,7 @@
 import { CalendarDaysIcon, ClockIcon } from "@heroicons/react/24/outline";
 
-export default function BookingForm({
- 
+export default function LocationInputs({
+
   pickup,
   setPickup,
   dropoff,
@@ -19,13 +19,13 @@ export default function BookingForm({
   time,
   setTime,
   handleBookRide,
-  
+
 }) {
   return (
     <div className="w-full">
       {/* Pickup Input */}
       <div className="relative">
-        <div className="flex items-center bg-gray-100 p-3 rounded-md">
+        <div className="flex items-center bg-gray-100 p-3 rounded-md border-2 border-blue-950">
           <span className="mr-2">📍</span>
           <input
             type="text"
@@ -36,13 +36,13 @@ export default function BookingForm({
               setPickup(value);
               setPickupSuggestions(await fetchSuggestions(value));
             }}
-            className="bg-transparent outline-none w-full text-black"
+            className="bg-transparent outline-none w-full text-black "
           />
         </div>
         {pickupSuggestions.map((sug, i) => (
           <div
             key={i}
-            className="bg-white text-black px-4 py-2 cursor-pointer border-b hover:bg-gray-900 hover:text-white"
+            className="bg-white text-black px-4 py-2 cursor-pointer border-b hover:bg-blue-600 hover:text-white"
             onClick={async () => {
               setPickup(sug.text);
               setPickupSuggestions([]);
@@ -57,7 +57,7 @@ export default function BookingForm({
 
       {/* Dropoff Input */}
       <div className="relative mt-4">
-        <div className="flex items-center bg-gray-100 p-3 rounded-md text-black">
+        <div className="flex items-center bg-gray-100 p-3 rounded-md text-black border-2 border-blue-950">
           <span className="mr-2">⬇️</span>
           <input
             type="text"
@@ -74,7 +74,7 @@ export default function BookingForm({
         {dropoffSuggestions.map((sug, i) => (
           <div
             key={i}
-            className="bg-white text-black px-4 py-2 cursor-pointer border-b hover:bg-gray-900 hover:text-white"
+            className="bg-white text-black px-4 py-2 cursor-pointer border-b hover:bg-blue-600 hover:text-white"
             onClick={async () => {
               setDropoff(sug.text);
               setDropoffSuggestions([]);
@@ -117,15 +117,13 @@ export default function BookingForm({
 
       {/* Buttons */}
       <div className="mt-8 flex gap-4 flex-wrap">
-        {/* <button
-      onClick={()=> handleBookRide()}
- className="bg-blue-500 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-900 transition">Book Ride</button> */}
+
 
         <button
-          onClick={() =>  handleBookRide()}
+          onClick={() => handleBookRide()}
           className="bg-blue-500 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-900 transition"
         >
-          See Prices
+          Book Ride
         </button>
       </div>
     </div>

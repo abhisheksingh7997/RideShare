@@ -1,6 +1,6 @@
 function Phone() {
   return (
-    <div className="relative bg-black text-white py-20 px-4 overflow-hidden">
+    <div className="relative bg-black text-white py-20 px-4 overflow-hidden transform transition duration-300 hover:scale-110">
       {/* Background Image */}
       <img
         src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1600&q=80"

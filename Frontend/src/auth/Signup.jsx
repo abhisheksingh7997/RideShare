@@ -43,14 +43,14 @@ export default function Signup() {
 
         <input
           name="username"
-          placeholder="Username"
+          placeholder="Enter Username"
           onChange={handleChange}
           className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
         <input
           name="email"
-          placeholder="Email"
+          placeholder="Enter Email"
           type="email"
           onChange={handleChange}
           className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -59,7 +59,15 @@ export default function Signup() {
         <input
           name="password"
           type="password"
-          placeholder="Password"
+          placeholder="Enter Password"
+          onChange={handleChange}
+          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          required
+        />
+         <input
+          name="phoneNo"
+          type="number"
+          placeholder="Enter PhoneNo"
           onChange={handleChange}
           className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           required

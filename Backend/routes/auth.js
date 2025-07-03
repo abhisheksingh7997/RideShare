@@ -14,6 +14,7 @@ router.post("/signup", async (req, res) => {
     email,
     password,
     role,
+    phoneNo,
     licenseNumber,
     vehicleNumber,
     vehicleType,
@@ -25,13 +26,14 @@ router.post("/signup", async (req, res) => {
     if (role === "driver") {
       await db.execute(
         `INSERT INTO users 
-        (username, email, password, role, licenseNumber, vehicleNumber, vehicleType) 
-        VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        (username, email, password, role, phoneNo, licenseNumber, vehicleNumber, vehicleType) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           username,
           email,
           hashedPassword,
           role,
+          phoneNo,
           licenseNumber,
           vehicleNumber,
           vehicleType,
@@ -39,9 +41,9 @@ router.post("/signup", async (req, res) => {
       );
     } else {
       await db.execute(
-        `INSERT INTO users (username, email, password, role) 
-         VALUES (?, ?, ?, ?)`,
-        [username, email, hashedPassword, role]
+        `INSERT INTO users (username, email, password,phoneNo, role) 
+         VALUES (?, ?, ?, ?, ?)`,
+        [username, email, hashedPassword, phoneNo, role]
       );
     }
 

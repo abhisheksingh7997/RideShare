@@ -12,6 +12,7 @@ export default function DateTimeSelectors({ date, setDate, time, setTime }) {
         >
           <option>Today</option>
           <option>Tomorrow</option>
+
         </select>
       </div>
 
@@ -23,6 +24,7 @@ export default function DateTimeSelectors({ date, setDate, time, setTime }) {
           className="bg-transparent w-full outline-none text-black"
         >
           <option>Now</option>
+          <option>In 15 minutes</option>
           <option>In 30 minutes</option>
           <option>In 1 hour</option>
         </select>
