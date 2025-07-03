@@ -6,18 +6,45 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const router = express.Router();
-const secretKey = process.env.key;
 
 // Signup route
 router.post("/signup", async (req, res) => {
-  const { username, email, password,role} = req.body;
+  const {
+    username,
+    email,
+    password,
+    role,
+    licenseNumber,
+    vehicleNumber,
+    vehicleType,
+  } = req.body;
+
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
-    await db.execute(
-      "INSERT INTO users (username, email, password ,role) VALUES (?, ?, ?,?)",
-      [username, email, hashedPassword , role]
-    );
+    if (role === "driver") {
+      await db.execute(
+        `INSERT INTO users 
+        (username, email, password, role, licenseNumber, vehicleNumber, vehicleType) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [
+          username,
+          email,
+          hashedPassword,
+          role,
+          licenseNumber,
+          vehicleNumber,
+          vehicleType,
+        ]
+      );
+    } else {
+      await db.execute(
+        `INSERT INTO users (username, email, password, role) 
+         VALUES (?, ?, ?, ?)`,
+        [username, email, hashedPassword, role]
+      );
+    }
+
     res.json({ message: "User registered successfully" });
   } catch (err) {
     console.error(err);
@@ -44,13 +71,15 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid Password" });
 
     const token = jwt.sign(
-      { id: user.id, email: user.email , role:user.role},
+      { id: user.id, email: user.email, role: user.role },
       process.env.key,
       { expiresIn: "1h" }
     );
 
-    res.json({ message: "Login successful", token ,
-      role:user.role ,
+    res.json({
+      message: "Login successful",
+      token,
+      role: user.role,
     });
   } catch (err) {
     res.status(500).json({ message: "Login Error", error: err });

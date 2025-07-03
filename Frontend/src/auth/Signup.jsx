@@ -8,7 +8,11 @@ export default function Signup() {
     email: "",
     password: "",
     role: "passenger",
+    licenseNumber: "",
+    vehicleNumber: "",
+    vehicleType: "",
   });
+
   const navigate = useNavigate();
 
   const handleChange = (e) =>
@@ -16,8 +20,10 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-    await axios.post("http://localhost:5000/api/auth/signup", form);
+      // here we are sending the form to backend .
+      await axios.post("http://localhost:5000/api/auth/signup", form);
 
       alert("Signup successful! Please login.");
       navigate("/login");
@@ -45,8 +51,8 @@ export default function Signup() {
         <input
           name="email"
           placeholder="Email"
-          onChange={handleChange}
           type="email"
+          onChange={handleChange}
           className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
@@ -70,6 +76,37 @@ export default function Signup() {
           <option value="driver">Driver</option>
         </select>
 
+        {/* Driver-specific fields */}
+        {form.role === "driver" && (
+          <>
+            <input
+              name="licenseNumber"
+              placeholder="License Number"
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+            <input
+              name="vehicleNumber"
+              placeholder="Vehicle Number"
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+            <select
+              name="vehicleType"
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            >
+              <option value="">-- Select Vehicle Type --</option>
+              <option value="car">Car</option>
+              <option value="auto">Auto</option>
+              <option value="bike">Bike</option>
+            </select>
+          </>
+        )}
+
         <button
           type="submit"
           className="w-full bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 transition duration-300 font-semibold"
@@ -86,13 +123,13 @@ export default function Signup() {
             Login
           </span>
         </p>
-            <p className="text-center text-sm text-gray-600">
-         Go to HomePage{" "}
+        <p className="text-center text-sm text-gray-600">
+          Go to{" "}
           <span
             onClick={() => navigate("/")}
             className="text-blue-600 hover:underline cursor-pointer"
           >
-          Home
+            Home
           </span>
         </p>
       </form>

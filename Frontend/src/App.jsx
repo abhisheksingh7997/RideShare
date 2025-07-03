@@ -12,7 +12,6 @@ import PageNotFound from './pages/PageNotFound';
 import Profile from './pages/Profile';
 
 
-
 function App() {
 
   return (

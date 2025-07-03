@@ -19,7 +19,7 @@ export default function BookingForm({
   time,
   setTime,
   handleBookRide,
-  navigate,
+  
 }) {
   return (
     <div className="w-full">
@@ -117,12 +117,12 @@ export default function BookingForm({
 
       {/* Buttons */}
       <div className="mt-8 flex gap-4 flex-wrap">
-        <button
+        {/* <button
       onClick={()=> handleBookRide()}
- className="bg-blue-500 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-900 transition">Book Ride</button>
+ className="bg-blue-500 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-900 transition">Book Ride</button> */}
 
         <button
-          onClick={() => navigate("/pricing")}
+          onClick={() =>  handleBookRide()}
           className="bg-blue-500 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-900 transition"
         >
           See Prices
