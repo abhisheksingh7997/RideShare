@@ -1,3 +1,7 @@
+// blue point -> current location
+// green point -> pickup location
+// red point -> dropoff location
+
 import { useEffect, useRef } from "react";
 import Map from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";

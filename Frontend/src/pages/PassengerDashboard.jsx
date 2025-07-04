@@ -112,9 +112,9 @@ export default function PassengerDashboard() {
 
               : !showDriverSearching ?
                 (<RideOptions selected={rideType} onSelect={handleRideTypeSelect} />) : (
-                  <DriverSearching />
+                  <DriverSearching rideType={rideType} />
                 )
-            }
+            } 
           </div>
 
           {/* map is in right side*/}

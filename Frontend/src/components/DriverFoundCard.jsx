@@ -1,42 +1,40 @@
-import { PhoneIcon, ChatBubbleOvalLeftIcon } from "@heroicons/react/24/solid";
-// we are importing these icons from the heroicons library
-export default function DriverFoundCard({ driver }) {
-  return (
-    <div className="bg-white rounded-xl shadow-xl p-6 max-w-md mx-auto mt-6">
-      <h2 className="text-xl font-bold text-gray-800 mb-4">
-        Driver Found ✌️
-      </h2>
+import {FaPhoneAlt , FaComments} from 'react-icons/fa';
 
-      <div className="flex items-center mb-4">
-        <img
-          src={driver?.photo || "https://cdn-icons-png.flaticon.com/512/8847/8847419.png"}
-          alt="Driver"
-          className="w-16 h-16 rounded-full border-2 border-blue-500"
-        />
-        <div className="ml-4">
-          <h3 className="text-lg font-semibold text-gray-800">{driver?.name || "Unknown"}</h3>
-          <p className="text-sm text-gray-600">Rating: ⭐ {driver?.rating || 4.8}</p>
-        </div>
-      </div>
+export default function DriverFoundCard({driver}){
+if(!driver) return null ;
+return(
+ <div className="border p-6 rounded-xl shadow-lg bg-gray-800 w-full max-w-md text-white">
+  <h2 className="text-xl font-semibold mb-4">Driver Found</h2>
 
-      <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4">
-        <p className="text-gray-700 text-sm">
-          <strong>Car:</strong> {driver?.car || "Hyundai i20"}<br />
-          <strong>Plate:</strong> {driver?.plate || "MP09 AB 1234"}<br />
-          <strong>ETA:</strong> {driver?.eta || "4 min"}
-        </p>
-      </div>
-
-      <div className="flex justify-between gap-4">
-        <button className="flex-1 bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center gap-2">
-          <PhoneIcon className="h-5 w-5" />
-          Call
-        </button>
-        <button className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-lg flex items-center justify-center gap-2">
-          <ChatBubbleOvalLeftIcon className="h-5 w-5" />
-          Message
-        </button>
-      </div>
+  <div className="flex items-center gap-4 mb-4">
+    <img
+      className="w-20 h-20 rounded-full object-cover border border-blue-500"
+      src="https://cdn-icons-png.flaticon.com/512/5283/5283021.png"
+      alt="Driver"
+    />
+    <div>
+      <p className="text-lg font-semibold">{driver.username}</p>
     </div>
-  );
+  </div>
+
+  <p><strong>Phone No:</strong> {driver.phoneNo}</p>
+  <p><strong>Vehicle Type:</strong> {driver.vehicleType}</p>
+  <p><strong>Vehicle Number:</strong> {driver.vehicleNumber}</p>
+  <p><strong>License Number:</strong> {driver.licenseNumber}</p>
+
+{/* contact to driver options */}
+  <div className="mt-6 flex gap-4 " >
+    <button className='flex items-center gap-2 bg-red-600 hover:bg-red-900 text-white px-4 py-2 rounded-lg transition'>
+    <a href={`tel:${driver.phoneNo}`}>
+    <FaPhoneAlt/> Call
+    </a>
+    </button>
+    <button  className="flex items-center gap-2 bg-green-600 hover:bg-green-900 text-white px-4 py-2 rounded-lg transition">
+    <FaComments/> Message
+    </button>
+  </div>
+</div>
+
+)
+
 }

@@ -1,26 +1,39 @@
 import { useEffect, useState } from "react";
 import DriverFoundCard from "../components/DriverFoundCard";
-
-export default function DriverSearching({ onDriverFound }) {
+import axios from "axios";
+export default function DriverSearching({ rideType, onDriverFound }) {
   const [dots, setDots] = useState("");
   const [showDriver, setShowDriver] = useState(false);
+  const [matchedDriver, setMatchedDriver] = useState(null);
 
   useEffect(() => {
     const dotInterval = setInterval(() => {
       setDots((prev) => (prev.length < 3 ? prev + "." : ""));
     }, 500);
 
-    // Show driver found card after 5 seconds
-    const timeout = setTimeout(() => {
-      setShowDriver(true);
-      onDriverFound && onDriverFound();
-    }, 7000);
+    // Show driver found card after few seconds
+    const timeout = setTimeout(async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/driver-found", {
+          params: { vehicleType: rideType },
+        });
+        if (res.data.length > 0) {
+          setMatchedDriver(res.data[Math.floor(Math.random() * res.data.length)]);
+        }
+        setShowDriver(true);
+        onDriverFound && onDriverFound();
+      }
+      catch (err) {
+        console.log("Failed to fetch driver", err);
+      }
+
+    }, 5000);
 
     return () => {
       clearInterval(dotInterval);
       clearTimeout(timeout);
     };
-  }, [onDriverFound]);
+  }, [rideType, onDriverFound]);
 
   return (
     <div className="w-full bg-transparent text-white rounded-xl shadow-lg p-10 min-h-[400px] flex flex-col items-center justify-center transition-all duration-500">
@@ -48,8 +61,14 @@ export default function DriverSearching({ onDriverFound }) {
         </>
       )}
 
+      {/* show  drivers if selected requireents are met  */}
+      {showDriver && matchedDriver && (
+        <DriverFoundCard driver={matchedDriver} />)}
 
-      {showDriver && <DriverFoundCard />}
+      {/* if no matcing driver is found  */}
+      {showDriver && !matchedDriver && (
+        <p>No Drivers found for {rideType} .Please try again Later .</p>
+      )}
     </div>
   );
 }

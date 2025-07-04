@@ -25,7 +25,8 @@ export default function LocationInputs({
     <div className="w-full">
       {/* Pickup Input */}
       <div className="relative">
-        <div className="flex items-center bg-gray-100 p-3 rounded-md border-2 border-blue-950">
+        <div className="flex items-center bg-gray-100 p-3 rounded-md border-2
+         focus:outline-none focus:ring-2 focus:ring-blue-500">
           <span className="mr-2">📍</span>
           <input
             type="text"
