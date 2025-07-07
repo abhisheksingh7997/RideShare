@@ -25,7 +25,8 @@ export default function PassengerDashboard() {
   const [showRideOptions, setShowRideOptions] = useState(false);
   const [showDriverSearching, setShowDriverSearching] = useState(false);
   const [rideType, setRideType] = useState("");
-
+  const [distance, setDistance] = useState(null);
+  const [formattedTime, setFormattedTime] = useState("");
 
 
   const navigate = useNavigate();
@@ -75,13 +76,30 @@ export default function PassengerDashboard() {
     setDropoffCoords(dropoffLoc);
     setShowRideOptions(true);
     console.log("searching is started");
+
   };
 
   // this is handling  the ride options
-  const handleRideTypeSelect = (type) => {
+  const handleRideTypeSelect = async (type) => {
     setRideType(type);
     setShowDriverSearching(true);
+
+    try {
+      await axios.post("http://localhost:5000/api/book-ride", {
+        pickup,
+        dropoff,
+        rideType: type,
+        passengerId: user.id,
+        distance,
+        time: formattedTime,
+
+      });
+      console.log("Ride stored Successfully");
+    } catch (err) {
+      console.error("Booking failed", err);
+    }
   };
+
   return (
     <div className="min-h-screen bg-gray-950 text-white font-sans">
       <Navbar />
@@ -108,13 +126,18 @@ export default function PassengerDashboard() {
                 setPickupCoords={setPickupCoords}
                 setDropoffCoords={setDropoffCoords}
                 handleBookRide={handleBookRide}
+
               />)
 
               : !showDriverSearching ?
                 (<RideOptions selected={rideType} onSelect={handleRideTypeSelect} />) : (
-                  <DriverSearching rideType={rideType} />
+                  <DriverSearching rideType={rideType}
+
+                    distance={distance}
+                    time={formattedTime}
+                  />
                 )
-            } 
+            }
           </div>
 
           {/* map is in right side*/}
@@ -126,6 +149,10 @@ export default function PassengerDashboard() {
                 pickupCoords={pickupCoords}
                 dropoffCoords={dropoffCoords}
                 currentCoords={currentCoords}
+                onRouteInfo={({ distance, formattedTime }) => {
+                  setDistance(distance);
+                  setFormattedTime(formattedTime);
+                }}
               />
             </div>
           )}

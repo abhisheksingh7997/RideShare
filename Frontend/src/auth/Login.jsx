@@ -16,19 +16,19 @@ function Login() {
       const res = await api.post("/auth/login", credentials);
       alert(res.data.message || "Login successful");
 
-        // store token and role .
+      // store token and role .
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem("role",res.data.role);
+      localStorage.setItem("role", res.data.role);
       // redirect based on role .
-      if(res.data.role ==="driver"){
+      if (res.data.role === "driver") {
         navigate("/driverdashboard");
       }
-      else if(res.data.role === "passenger"){
+      else if (res.data.role === "passenger") {
         navigate("/passengerdashboard");
       }
-    else {
-      navigate("/pagenotfound");
-    }
+      else {
+        navigate("/pagenotfound");
+      }
     } catch (err) {
       alert(err.response?.data?.error || "Login failed");
     }
@@ -75,7 +75,7 @@ function Login() {
             Sign Up
           </span>
         </p>
-            <p className="text-center text-sm text-gray-600">
+        <p className="text-center text-sm text-gray-600">
           Go to HomePage{" "}
           <span
             onClick={() => navigate("/")}

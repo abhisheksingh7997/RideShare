@@ -14,9 +14,9 @@ import FeatureSet from "@arcgis/core/rest/support/FeatureSet";
 import * as route from "@arcgis/core/rest/route";
 import '@arcgis/map-components/components/arcgis-distance-measurement-2d';
 //  api key with esriconfig for authentication of api to use esri services .
-esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurLXOHfTw7xS6Y4MDf0mhJNkT2Mx73me4-Emx56Jk88fkLPhIybELc4YyguRQWqLlTjbH0zIx8IedfU1ruipV6kMJhTGRS_z5yVL8CcBIIEUmyGKv1NeKE_DX8TpEEWn2heEvd0x_LHxOSGu9Y3fN3FFPPs2zmb_JdsOVi0bOjfOOWsr6lEKPHvo_qJWih_nDz021oh42hWKjHAql_uzo9EQ.AT1_bV6fTXOy"; 
+esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurLXOHfTw7xS6Y4MDf0mhJNkT2Mx73me4-Emx56Jk88fkLPhIybELc4YyguRQWqLlTjbH0zIx8IedfU1ruipV6kMJhTGRS_z5yVL8CcBIIEUmyGKv1NeKE_DX8TpEEWn2heEvd0x_LHxOSGu9Y3fN3FFPPs2zmb_JdsOVi0bOjfOOWsr6lEKPHvo_qJWih_nDz021oh42hWKjHAql_uzo9EQ.AT1_bV6fTXOy";
 
-export default function ArcMap({ pickupCoords, dropoffCoords, currentCoords }) {
+export default function ArcMap({ pickupCoords, dropoffCoords, currentCoords, onRouteInfo }) {
   const mapRef = useRef();
 
   useEffect(() => {
@@ -65,7 +65,7 @@ export default function ArcMap({ pickupCoords, dropoffCoords, currentCoords }) {
         outline: { color: "white", width: 1 },
       };
 
-      const graphic = new Graphic({ geometry:point, symbol });
+      const graphic = new Graphic({ geometry: point, symbol });
       markerLayer.add(graphic);
       return graphic; //  Return for route use
     };
@@ -73,7 +73,7 @@ export default function ArcMap({ pickupCoords, dropoffCoords, currentCoords }) {
     //  Add markers
     const pickupGraphic = pickupCoords ? addMarker(pickupCoords, "green") : null;
     const dropoffGraphic = dropoffCoords ? addMarker(dropoffCoords, "red") : null;
-    const currentGraphic = currentCoords && isValidCoords(currentCoords) ? addMarker(currentCoords , "blue") : null ; 
+    const currentGraphic = currentCoords && isValidCoords(currentCoords) ? addMarker(currentCoords, "blue") : null;
     //  Route logic 
     const originGraphic = pickupGraphic || currentGraphic;
     if (originGraphic && dropoffGraphic) {
@@ -96,12 +96,27 @@ export default function ArcMap({ pickupCoords, dropoffCoords, currentCoords }) {
               width: 3,
             };
             markerLayer.add(routeResult.route); // Show route
+
+            // now we will extract distance and tiem form the route of arcmap .
+            const attributes = routeResult.route.attributes;
+            const distance = attributes.Total_Kilometers;
+            const time = attributes.Total_TravelTime; // in minutes 
+            // now converting time in HH:MM format
+            const hours = Math.floor(time / 60);
+            const minutes = Math.round(time % 60);
+
+            const formattedTime = `${hours}hr${minutes}min`;
+            console.log("Distance (KM) :", distance);
+            console.log("Estimated Time (min):", formattedTime);
+            if (onRouteInfo) onRouteInfo({ distance, formattedTime });
           }
         })
         .catch((error) => {
           console.error("Route solve error:", error);
         });
     }
+
+
 
     return () => {
       view?.destroy();

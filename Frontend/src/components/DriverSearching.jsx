@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import DriverFoundCard from "../components/DriverFoundCard";
 import axios from "axios";
-export default function DriverSearching({ rideType, onDriverFound }) {
+export default function DriverSearching({ rideType, onDriverFound, distance, time }) {
   const [dots, setDots] = useState("");
   const [showDriver, setShowDriver] = useState(false);
   const [matchedDriver, setMatchedDriver] = useState(null);
@@ -63,7 +63,7 @@ export default function DriverSearching({ rideType, onDriverFound }) {
 
       {/* show  drivers if selected requireents are met  */}
       {showDriver && matchedDriver && (
-        <DriverFoundCard driver={matchedDriver} />)}
+        <DriverFoundCard driver={matchedDriver} distance={distance} time={time} />)}
 
       {/* if no matcing driver is found  */}
       {showDriver && !matchedDriver && (

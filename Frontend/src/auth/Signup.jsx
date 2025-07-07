@@ -64,7 +64,7 @@ export default function Signup() {
           className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
-         <input
+        <input
           name="phoneNo"
           type="number"
           placeholder="Enter PhoneNo"

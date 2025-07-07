@@ -5,7 +5,7 @@ import authRoutes from "./routes/auth.js";
 import {verifyToken}  from "./middleware/verifyToken.js";
 import dotenv from "dotenv";
 import driverRoutes from "./routes/driver.js";
-
+import rideRoutes from "./routes/bookRide.js";
 
 // Load environment variables
 dotenv.config();
@@ -38,8 +38,8 @@ app.get("/api/profile", verifyToken, (req, res) => {
 
 // fetching driver details
 app.use("/api",driverRoutes);
-
-
+//  // fetching ride details 
+ app.use("/api",rideRoutes);
 // Server start
 app.listen(process.env.port, () =>
   console.log(`🚀 Server running on http://localhost:${process.env.port}`)
