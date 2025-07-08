@@ -13,7 +13,6 @@ import RouteParameters from "@arcgis/core/rest/support/RouteParameters";
 import FeatureSet from "@arcgis/core/rest/support/FeatureSet";
 import * as route from "@arcgis/core/rest/route";
 import '@arcgis/map-components/components/arcgis-distance-measurement-2d';
-//  api key with esriconfig for authentication of api to use esri services .
 esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurLXOHfTw7xS6Y4MDf0mhJNkT2Mx73me4-Emx56Jk88fkLPhIybELc4YyguRQWqLlTjbH0zIx8IedfU1ruipV6kMJhTGRS_z5yVL8CcBIIEUmyGKv1NeKE_DX8TpEEWn2heEvd0x_LHxOSGu9Y3fN3FFPPs2zmb_JdsOVi0bOjfOOWsr6lEKPHvo_qJWih_nDz021oh42hWKjHAql_uzo9EQ.AT1_bV6fTXOy";
 
 export default function ArcMap({ pickupCoords, dropoffCoords, currentCoords, onRouteInfo }) {
@@ -28,8 +27,7 @@ export default function ArcMap({ pickupCoords, dropoffCoords, currentCoords, onR
       return;
     }
 
-    const map = new Map({ basemap: "streets-navigation-vector" }); // basemap 
-    // view that will be used to display the map
+    const map = new Map({ basemap: "streets-navigation-vector" }); 
     const view = new MapView({
       container: mapRef.current,
       map,
@@ -39,7 +37,6 @@ export default function ArcMap({ pickupCoords, dropoffCoords, currentCoords, onR
 
     const markerLayer = new GraphicsLayer();
     map.add(markerLayer);
-    // check if the coordinates is valid or not .
     const isValidCoords = (coords) =>
       coords &&
       typeof coords.lat === "number" &&
@@ -49,7 +46,6 @@ export default function ArcMap({ pickupCoords, dropoffCoords, currentCoords, onR
       coords.lng >= -180 &&
       coords.lng <= 180;
 
-    // if the coords are valid add them to the marker .
     const addMarker = (coords, color) => {
       if (!isValidCoords(coords)) return;
 
@@ -67,14 +63,12 @@ export default function ArcMap({ pickupCoords, dropoffCoords, currentCoords, onR
 
       const graphic = new Graphic({ geometry: point, symbol });
       markerLayer.add(graphic);
-      return graphic; //  Return for route use
+      return graphic; 
     };
 
-    //  Add markers
     const pickupGraphic = pickupCoords ? addMarker(pickupCoords, "green") : null;
     const dropoffGraphic = dropoffCoords ? addMarker(dropoffCoords, "red") : null;
     const currentGraphic = currentCoords && isValidCoords(currentCoords) ? addMarker(currentCoords, "blue") : null;
-    //  Route logic 
     const originGraphic = pickupGraphic || currentGraphic;
     if (originGraphic && dropoffGraphic) {
       const routeUrl =
@@ -95,13 +89,11 @@ export default function ArcMap({ pickupCoords, dropoffCoords, currentCoords, onR
               color: [5, 150, 255],
               width: 3,
             };
-            markerLayer.add(routeResult.route); // Show route
+            markerLayer.add(routeResult.route); 
 
-            // now we will extract distance and tiem form the route of arcmap .
             const attributes = routeResult.route.attributes;
             const distance = attributes.Total_Kilometers;
-            const time = attributes.Total_TravelTime; // in minutes 
-            // now converting time in HH:MM format
+            const time = attributes.Total_TravelTime; 
             const hours = Math.floor(time / 60);
             const minutes = Math.round(time % 60);
 
@@ -123,5 +115,5 @@ export default function ArcMap({ pickupCoords, dropoffCoords, currentCoords, onR
     };
   }, [pickupCoords, dropoffCoords, currentCoords]);
 
-  return <div ref={mapRef} className="w-full h-[400px] rounded-xl shadow-lg" />;
+  return <div ref={mapRef} className="w-full h-[550px] rounded-xl shadow-lg " />;
 }

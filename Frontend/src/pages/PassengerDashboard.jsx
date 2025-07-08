@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import ArcMap from "../components/ArcMap";
 import LocationInputs from "../components/LocationInputs";
-
 import UserGreeting from "../components/UserGreeting";
 import { fetchSuggestions, geocodeAddress } from "../utils/Geocode";
+import socket from "../utils/socket";
 import axios from "axios";
 import RideOptions from "../components/RideOptions";
 import DriverSearching from "../components/DriverSearching";
@@ -13,6 +13,8 @@ import Pricing from "./Pricing";
 import Feedback from "./Feedback";
 import Contacts from "./Contacts";
 import Footer from "./Footer";
+import DriverFoundCard from "../components/DriverFoundCard";
+
 export default function PassengerDashboard() {
   const [pickup, setPickup] = useState("");
   const [dropoff, setDropoff] = useState("");
@@ -27,11 +29,13 @@ export default function PassengerDashboard() {
   const [rideType, setRideType] = useState("");
   const [distance, setDistance] = useState(null);
   const [formattedTime, setFormattedTime] = useState("");
-
+  const [assignedDriver, setAssignedDriver] = useState(null);
+  const [requestDeclined, setRequestDeclined] = useState(false);
+  const [fare, setFare] = useState(0);
+  const [rideId, setRideId] = useState(null); 
 
   const navigate = useNavigate();
 
-  // ye current location ko fetch karega 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -39,17 +43,16 @@ export default function PassengerDashboard() {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
-        console.log(position);
       },
       (err) => console.error("Location access denied", err)
     );
   }, []);
 
-  // we are fetching user from local storage which is stored during login .
   useEffect(() => {
     const fetchUser = async () => {
       const token = localStorage.getItem("token");
       if (!token) return navigate("/login");
+
       try {
         const res = await axios.get("http://localhost:5000/api/profile", {
           headers: { Authorization: `Bearer ${token}` },
@@ -64,54 +67,105 @@ export default function PassengerDashboard() {
     fetchUser();
   }, [navigate]);
 
-  // it is handling arcgis map 
+  useEffect(() => {
+    if (!distance) return;
+
+    let ratePerKm = 0;
+    if (rideType === "car") ratePerKm = 20;
+    else if (rideType === "bike") ratePerKm = 10;
+    else if (rideType === "auto") ratePerKm = 15;
+    else ratePerKm = 12;
+
+    setFare(distance * ratePerKm);
+  }, [rideType, distance]);
+
   const handleBookRide = async () => {
-    if (!pickup || !dropoff)
-      return alert("Please enter both pickup and dropoff locations");
+    if (!pickup || !dropoff) return alert("Please enter both locations");
+
     const pickupLoc = await geocodeAddress(pickup);
     const dropoffLoc = await geocodeAddress(dropoff);
+
     if (!pickupLoc || !dropoffLoc)
       return alert("Unable to find coordinates. Try different locations.");
+
     setPickupCoords(pickupLoc);
     setDropoffCoords(dropoffLoc);
     setShowRideOptions(true);
-    console.log("searching is started");
-
   };
 
-  // this is handling  the ride options
   const handleRideTypeSelect = async (type) => {
     setRideType(type);
     setShowDriverSearching(true);
 
     try {
-      await axios.post("http://localhost:5000/api/book-ride", {
+      const res = await axios.post("http://localhost:5000/api/book-ride", {
         pickup,
         dropoff,
         rideType: type,
         passengerId: user.id,
         distance,
         time: formattedTime,
-
+        fare,
+        pickupCoords,
+        dropoffCoords
       });
-      console.log("Ride stored Successfully");
+
+      const newRideId = res.data.rideId;
+      setRideId(newRideId); 
+
+      socket.emit("rideRequest", {
+        rideId: newRideId,
+        passengerId: user.id,
+        pickup,
+        dropoff,
+        rideType: type,
+        distance,
+        time: formattedTime,
+        fare,
+        pickupCoords,
+        dropoffCoords
+      });
+
+      console.log("Ride stored & request sent");
     } catch (err) {
-      console.error("Booking failed", err);
+      console.error("Booking failed", err,pickupCoords,dropoffCoords);
     }
   };
+
+  // Socket listeners for driver response
+  useEffect(() => {
+    const handleAccept = ({ driver, passengerId }) => {
+      if (passengerId === user?.id) {
+        setAssignedDriver(driver);
+        setShowDriverSearching(false);
+      }
+    };
+
+    const handleDecline = ({ passengerId }) => {
+      if (user?.id === passengerId) {
+        setShowDriverSearching(false);
+        setRequestDeclined(true);
+      }
+    };
+
+    socket.on("driverAccepted", handleAccept);
+    socket.on("driverDeclined", handleDecline);
+
+    return () => {
+      socket.off("driverAccepted", handleAccept);
+      socket.off("driverDeclined", handleDecline);
+    };
+  }, [user]);
 
   return (
     <div className="min-h-screen bg-gray-950 text-white font-sans">
       <Navbar />
       <div className="flex flex-col items-center px-4 py-10 pt-28 max-w-7xl mx-auto">
-
         <div className="w-full flex flex-col lg:flex-row gap-10 lg:gap-20 justify-between">
-          {/* left side having input details  */}
           <div className="flex-1">
             <UserGreeting user={user} />
 
             {!showRideOptions ? (
-
               <LocationInputs
                 pickup={pickup}
                 setPickup={setPickup}
@@ -126,25 +180,38 @@ export default function PassengerDashboard() {
                 setPickupCoords={setPickupCoords}
                 setDropoffCoords={setDropoffCoords}
                 handleBookRide={handleBookRide}
-
-              />)
-
-              : !showDriverSearching ?
-                (<RideOptions selected={rideType} onSelect={handleRideTypeSelect} />) : (
-                  <DriverSearching rideType={rideType}
-
-                    distance={distance}
-                    time={formattedTime}
-                  />
-                )
-            }
+              />
+            ) : showDriverSearching ? (
+              rideId ? (
+                <DriverSearching
+                  rideType={rideType}
+                  distance={distance}
+                  time={formattedTime}
+                  user={user}
+                  rideId={rideId}
+                  fare={fare}
+                />
+              ) : (
+                <p className="text-blue-400">Creating ride request...</p>
+              )
+            ) : assignedDriver ? (
+              <DriverFoundCard
+                driver={assignedDriver}
+                distance={distance}
+                time={formattedTime}
+                fare={fare}
+              />
+            ) : requestDeclined ? (
+              <p className="text-red-500 mt-4">
+                No drivers accepted the ride. Please try again later.
+              </p>
+            ) : (
+              <RideOptions selected={rideType} onSelect={handleRideTypeSelect} />
+            )}
           </div>
-
-          {/* map is in right side*/}
 
           {(pickupCoords || currentCoords) && (
             <div className="flex-1 flex justify-center items-center">
-
               <ArcMap
                 pickupCoords={pickupCoords}
                 dropoffCoords={dropoffCoords}
@@ -156,7 +223,6 @@ export default function PassengerDashboard() {
               />
             </div>
           )}
-
         </div>
       </div>
       <Pricing />
@@ -165,4 +231,4 @@ export default function PassengerDashboard() {
       <Footer />
     </div>
   );
-} 
+}
