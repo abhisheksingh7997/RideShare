@@ -15,13 +15,13 @@ import * as route from "@arcgis/core/rest/route";
 import '@arcgis/map-components/components/arcgis-distance-measurement-2d';
 esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurLXOHfTw7xS6Y4MDf0mhJNkT2Mx73me4-Emx56Jk88fkLPhIybELc4YyguRQWqLlTjbH0zIx8IedfU1ruipV6kMJhTGRS_z5yVL8CcBIIEUmyGKv1NeKE_DX8TpEEWn2heEvd0x_LHxOSGu9Y3fN3FFPPs2zmb_JdsOVi0bOjfOOWsr6lEKPHvo_qJWih_nDz021oh42hWKjHAql_uzo9EQ.AT1_bV6fTXOy";
 
-export default function ArcMap({ pickupCoords, dropoffCoords, currentCoords, onRouteInfo }) {
+export default function ArcMap({ pickupCoords, dropoffCoords, onRouteInfo }) {
   const mapRef = useRef();
 
   useEffect(() => {
     if (!mapRef.current) return;
 
-    const center = pickupCoords || currentCoords;
+    const center = pickupCoords ;
     if (!center?.lat || !center?.lng) {
       console.warn("Center coordinates missing");
       return;
@@ -68,8 +68,8 @@ export default function ArcMap({ pickupCoords, dropoffCoords, currentCoords, onR
 
     const pickupGraphic = pickupCoords ? addMarker(pickupCoords, "green") : null;
     const dropoffGraphic = dropoffCoords ? addMarker(dropoffCoords, "red") : null;
-    const currentGraphic = currentCoords && isValidCoords(currentCoords) ? addMarker(currentCoords, "blue") : null;
-    const originGraphic = pickupGraphic || currentGraphic;
+
+    const originGraphic = pickupGraphic;
     if (originGraphic && dropoffGraphic) {
       const routeUrl =
         "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World"; // this route url of arcgis 
@@ -113,7 +113,7 @@ export default function ArcMap({ pickupCoords, dropoffCoords, currentCoords, onR
     return () => {
       view?.destroy();
     };
-  }, [pickupCoords, dropoffCoords, currentCoords]);
+  }, [pickupCoords, dropoffCoords]);
 
   return <div ref={mapRef} className="w-full h-[550px] rounded-xl shadow-lg " />;
 }

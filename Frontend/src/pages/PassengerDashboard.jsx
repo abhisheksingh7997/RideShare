@@ -23,7 +23,6 @@ export default function PassengerDashboard() {
   const [user, setUser] = useState(null);
   const [pickupCoords, setPickupCoords] = useState(null);
   const [dropoffCoords, setDropoffCoords] = useState(null);
-  const [currentCoords, setCurrentCoords] = useState(null);
   const [showRideOptions, setShowRideOptions] = useState(false);
   const [showDriverSearching, setShowDriverSearching] = useState(false);
   const [rideType, setRideType] = useState("");
@@ -36,17 +35,7 @@ export default function PassengerDashboard() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setCurrentCoords({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        });
-      },
-      (err) => console.error("Location access denied", err)
-    );
-  }, []);
+
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -98,7 +87,7 @@ export default function PassengerDashboard() {
     setShowDriverSearching(true);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/book-ride", {
+      const res = await axios.post("http://localhost:5000/api/rides/book-ride", {
         pickup,
         dropoff,
         rideType: type,
@@ -112,7 +101,7 @@ export default function PassengerDashboard() {
 
       const newRideId = res.data.rideId;
       setRideId(newRideId); 
-
+      socket.emit("registerRequest")
       socket.emit("rideRequest", {
         rideId: newRideId,
         passengerId: user.id,
@@ -150,6 +139,10 @@ export default function PassengerDashboard() {
 
     socket.on("driverAccepted", handleAccept);
     socket.on("driverDeclined", handleDecline);
+    socket.on("driverArrivedAlert", ({ rideId, message }) => {
+  alert(message,rideId); // or show toast / modal
+});
+
 
     return () => {
       socket.off("driverAccepted", handleAccept);
@@ -210,12 +203,11 @@ export default function PassengerDashboard() {
             )}
           </div>
 
-          {(pickupCoords || currentCoords) && (
+          {(pickupCoords) && (
             <div className="flex-1 flex justify-center items-center">
               <ArcMap
                 pickupCoords={pickupCoords}
                 dropoffCoords={dropoffCoords}
-                currentCoords={currentCoords}
                 onRouteInfo={({ distance, formattedTime }) => {
                   setDistance(distance);
                   setFormattedTime(formattedTime);

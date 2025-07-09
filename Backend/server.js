@@ -6,7 +6,6 @@ import {verifyToken}  from "./middleware/verifyToken.js";
 import dotenv from "dotenv";
 import driverRoutes from "./routes/driver.js";
 import rideRoutes from "./routes/bookRide.js";
-import pastRidesRoutes from "./routes/rides.js";
 import { Server } from "socket.io";
 import http from "http";
 
@@ -18,6 +17,7 @@ const io = new Server(server,{
     methods:["GET","POST","PUT"]
   }
 });
+const passengerSocketMap = new Map() ;
 global.io = io ;
 dotenv.config();
 app.use(cors({
@@ -33,6 +33,8 @@ app.use("/api/auth", (req, res, next) => {
   next();
 });
 app.use("/api/auth", authRoutes);
+app.use("/api",driverRoutes);
+app.use("/api/rides",rideRoutes);
 
 
 app.get("/api/profile", verifyToken, (req, res) => {
@@ -56,12 +58,16 @@ io.on("connection",(socket)=>{
   });
   socket.on("disconnect",()=>{
     console.log("Client Disconnected:",socket.id);
+  });
+  socket.on("DriverReached", ({ rideId, passengerId, message }) => {
+  const passengerSocketId = getPassengerSocketId(passengerId);
+  if (passengerSocketId) {
+    io.to(passengerSocketId).emit("driverArrivedAlert", { rideId, message });
   }
-  )
+});
+
 })
-app.use("/api",driverRoutes);
- app.use("/api",rideRoutes);
- app.use("/api",pastRidesRoutes);
+
 server.listen(process.env.port, () =>
   console.log(`Server running on http://localhost:${process.env.port}`)
 

@@ -3,12 +3,11 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import DriverProfile from "../pages/DriverProfile";
 import RideRequests from "../components/RideRequests";
-import ViewPastRides from "./ViewPastRides";
-import Sidebar from "../components/Sidebar";
-import { Menu } from "lucide-react";
+import ViewPastRides from "../components/ViewPastRides";
+import DriverNavbar from "../components/DriverNavbar";
+
 export default function DriverDashboard() {
   const [driver, setDriver] = useState(null);
-  const [sideBarOpen , setSideBarOpen] = useState(false);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -28,18 +27,9 @@ export default function DriverDashboard() {
   }, [token]);
 
   return (
-    <div className="flex min-h-screen bg-gray-900 text-white">
-   
-
-      <Sidebar isOpen ={sideBarOpen} setIsOpen={setSideBarOpen} />
-
-      <main className={`flex-1 p-6 ml-0 md:ml-64 transition-all duration-300`}>
-        <button
-          className="md:hidden text-white mb-4"
-          onClick={() => setSideBarOpen(!sideBarOpen)}
-        >
-          <Menu size={28} />
-        </button>
+    <div className="min-h-screen bg-gray-900 text-white">
+      <DriverNavbar />
+      <main className="p-6">
         {driver ? (
           <>
             <DriverProfile driver={driver} />

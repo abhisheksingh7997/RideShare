@@ -3,7 +3,6 @@ import express from "express";
 
 const router = express.Router();
 
-// get specifi driver info by their id to show on driver dashbaord .
 
 router.get('/driver-info/:id', async (req, res) => {
     const { id } = req.params;
@@ -16,9 +15,7 @@ router.get('/driver-info/:id', async (req, res) => {
         res.status(500).json({ error: "Database error" });
     }
 });
-// gte all driver info to show on passengerdashboard when driver accepts request .
 router.get('/driver-found', async (req, res) => {
-    // it will store vehicleType from the request cominf .
     const { vehicleType } = req.query;
     if (!vehicleType) return res.status(400).json({ error: "VehilceType is required" });
 

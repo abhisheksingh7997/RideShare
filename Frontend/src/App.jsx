@@ -10,7 +10,7 @@ import PassengerDashboard from './pages/PassengerDashboard';
 import PageNotFound from './pages/PageNotFound';
 import Profile from './pages/Profile';
 import RideRequests from './components/RideRequests';
-// import ViewPastRides from './pages/ViewPastRides';
+import Earnings from './pages/Earnings' ;
 
 
 
@@ -31,8 +31,7 @@ function App() {
           <Route path="/driverdashboard" element={<DriverDashboard />} />
           <Route path="/passengerdashboard" element={<PassengerDashboard />} />
           <Route path="/rideRequests" element={<RideRequests />} />
-          {/* <Route path="/viewPastRides" element={<ViewPastRides />} /> */}
-     
+           <Route path="/earnings" element={<Earnings/>} />
 
 
 

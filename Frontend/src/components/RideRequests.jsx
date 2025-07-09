@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import socket from "../utils/socket";
-import ArcMap from "./ArcMap";
+import DriverMap from "./DriverMap";
+import api from "../api/api";
 
 export default function RideRequests({ driver }) {
   const [rideRequests, setRideRequests] = useState([]);
   const [acceptedRide, setAcceptedRide] = useState(null);
   const [driverLocation, setDriverLocation] = useState(null);
-  const [liveRouteInfo, setLiveRouteInfo] = useState(null); 
+  const [liveRouteInfo, setLiveRouteInfo] = useState(null);
   useEffect(() => {
     const registerDriver = () => {
       if (driver) {
@@ -46,7 +47,7 @@ export default function RideRequests({ driver }) {
     );
   }, [acceptedRide]);
 
-  const handleAccept = (ride) => {
+  const handleAccept = async (ride) => {
     if (!driver?.id) return console.error("Driver not available");
 
     socket.emit("acceptRide", {
@@ -60,13 +61,23 @@ export default function RideRequests({ driver }) {
       passengerId: ride.passengerId,
       rideId: ride.rideId,
     });
+    try {
+      await api.put(`/rides/update-ride-status/${ride.rideId}`, {
+        status: "accepted",
+        driverId: driver.id,
+
+      });
+    }
+    catch (err) {
+      console.error("error updating db:", err);
+    }
 
     setAcceptedRide(ride);
     setRideRequests([]);
-    setLiveRouteInfo(null); 
+    setLiveRouteInfo(null);
   };
 
-  const handleDecline = (ride) => {
+  const handleDecline = async (ride) => {
     if (!driver?.id) return console.error("Driver not available");
 
     socket.emit("declineRide", {
@@ -74,7 +85,14 @@ export default function RideRequests({ driver }) {
       passengerId: ride.passengerId,
       rideId: ride.rideId,
     });
-
+    try {
+      await api.put(`/rides/update-ride-status/${ride.rideId}`, {
+        status: "declined",
+        driverId: null,
+      });
+    } catch (err) {
+      console.error("Error updating DB:", err);
+    }
     setRideRequests((prev) => prev.filter((r) => r.rideId !== ride.rideId));
   };
 
@@ -99,7 +117,7 @@ export default function RideRequests({ driver }) {
               </>
             ) : (
               <>
-                <p><strong>Distance:</strong> {acceptedRide.distance.toFixed(2)} km</p>
+                <p><strong>Distance:</strong> {acceptedRide.distance} km</p>
                 <p><strong>Time:</strong> {acceptedRide.time}</p>
               </>
             )}
@@ -107,11 +125,13 @@ export default function RideRequests({ driver }) {
             <p><strong>Fare:</strong> ₹{acceptedRide.fare.toFixed(2)}</p>
           </div>
 
-          <ArcMap
+          <DriverMap
             pickupCoords={acceptedRide.pickupCoords}
             currentCoords={driverLocation}
             dropoffCoords={acceptedRide.dropoffCoords}
-            onRouteInfo={(info) => setLiveRouteInfo(info)}
+            acceptedRide ={acceptedRide}
+
+            
           />
         </div>
       ) : rideRequests.length === 0 ? (
