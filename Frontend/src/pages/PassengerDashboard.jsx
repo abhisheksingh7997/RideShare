@@ -101,6 +101,7 @@ export default function PassengerDashboard() {
 
       const newRideId = res.data.rideId;
       setRideId(newRideId); 
+      localStorage.setItem("rideId",newRideId);
       socket.emit("registerRequest")
       socket.emit("rideRequest", {
         rideId: newRideId,

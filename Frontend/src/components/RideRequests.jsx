@@ -129,7 +129,7 @@ export default function RideRequests({ driver }) {
             pickupCoords={acceptedRide.pickupCoords}
             currentCoords={driverLocation}
             dropoffCoords={acceptedRide.dropoffCoords}
-            acceptedRide ={acceptedRide}
+            rideId = {acceptedRide.rideId}
 
             
           />
@@ -146,7 +146,7 @@ export default function RideRequests({ driver }) {
               <p><strong>Pickup:</strong> {ride.pickup}</p>
               <p><strong>Dropoff:</strong> {ride.dropoff}</p>
               <p><strong>Type:</strong> {ride.rideType}</p>
-              <p><strong>Distance:</strong> {ride.distance.toFixed(2)} km</p>
+              <p><strong>Distance:</strong> {ride.distance} km</p>
               <p><strong>Time:</strong> {ride.time}</p>
               <p><strong>Fare:</strong> ₹{ride.fare.toFixed(2)}</p>
             </div>

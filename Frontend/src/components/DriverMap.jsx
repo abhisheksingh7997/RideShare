@@ -13,13 +13,14 @@ import socket from "../utils/socket";
 
 esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurLXOHfTw7xS6Y4MDf0mhJNkT2Mx73me4-Emx56Jk88fkLPhIybELc4YyguRQWqLlTjbH0zIx8IedfU1ruipV6kMJhTGRS_z5yVL8CcBIIEUmyGKv1NeKE_DX8TpEEWn2heEvd0x_LHxOSGu9Y3fN3FFPPs2zmb_JdsOVi0bOjfOOWsr6lEKPHvo_qJWih_nDz021oh42hWKjHAql_uzo9EQ.AT1_bV6fTXOy";
 
-export default function DriverMap({ pickupCoords, dropoffCoords, onRouteInfo ,acceptedRide }) {
+export default function DriverMap({ pickupCoords, dropoffCoords, onRouteInfo,rideId }) {
   const mapRef = useRef();
   const mapViewRef = useRef();
   const markerLayerRef = useRef();
   const driverMarkerRef = useRef();
   const [driverPath, setDriverPath] = useState([]);
-
+  const [dropoffPath , setDropoffPath] = useState([]);
+  const [driverReachedPickup , setDriverReachedPickup]= useState(false);
   useEffect(() => {
     if (!mapRef.current) return;
 
@@ -64,11 +65,9 @@ export default function DriverMap({ pickupCoords, dropoffCoords, onRouteInfo ,ac
       markerLayer.add(graphic);
     };
 
-    // Add pickup and dropoff markers
     createMarker(pickupCoords, "green");
     createMarker(dropoffCoords, "red");
 
-    // Get current location
     navigator.geolocation.getCurrentPosition(async (pos) => {
       const currentCoords = {
         lat: pos.coords.latitude,
@@ -113,6 +112,49 @@ export default function DriverMap({ pickupCoords, dropoffCoords, onRouteInfo ,ac
             width: 3,
           };
           markerLayer.add(routeResult.route);
+const pickupToDropoffParams = new RouteParameters({
+  stops: new FeatureSet({
+    features: [
+      new Graphic({
+        geometry: new Point({
+          longitude: pickupCoords.lng,
+          latitude: pickupCoords.lat,
+          spatialReference: { wkid: 4326 },
+        }),
+      }),
+      new Graphic({
+        geometry: new Point({
+          longitude: dropoffCoords.lng,
+          latitude: dropoffCoords.lat,
+          spatialReference: { wkid: 4326 },
+        }),
+      }),
+    ],
+  }),
+  returnRoutes: true,
+  outSpatialReference: { wkid: 4326 },
+});
+
+try {
+  const result2 = await route.solve(routeUrl, pickupToDropoffParams);
+  const dropoffRoute = result2.routeResults[0];
+
+  if (dropoffRoute) {
+    dropoffRoute.route.symbol = {
+      type: "simple-line",
+      color: [0, 255, 0], 
+      width: 3,
+    };
+    markerLayer.add(dropoffRoute.route);
+    const dropPath = dropoffRoute.route.geometry.paths[0].map(([lng,lat])=>({
+      lng,
+      lat,
+    }));
+    setDropoffPath(dropPath);
+  }
+} catch (error) {
+  console.error("Pickup to Dropoff Route solve error:", error);
+}
 
           const attributes = routeResult.route.attributes;
           const distance = attributes.Total_Kilometers;
@@ -123,7 +165,6 @@ export default function DriverMap({ pickupCoords, dropoffCoords, onRouteInfo ,ac
 
           if (onRouteInfo) onRouteInfo({ distance, formattedTime });
 
-          // Simulate driver movement along polyline
           const path = routeResult.route.geometry.paths[0].map(([lng, lat]) => ({
             lng,
             lat,
@@ -136,7 +177,6 @@ export default function DriverMap({ pickupCoords, dropoffCoords, onRouteInfo ,ac
     });
   }, [pickupCoords, dropoffCoords]);
 
-  // Move driver along route path
   useEffect(() => {
     if (driverPath.length === 0 || !markerLayerRef.current) return;
 
@@ -164,27 +204,51 @@ export default function DriverMap({ pickupCoords, dropoffCoords, onRouteInfo ,ac
       index++;
       if (index >= driverPath.length) {
         clearInterval(intervalId);
-       socket.emit("DriverReached", {
-  rideId: acceptedRide.rideId,
-  passengerId: acceptedRide.passengerId,
-  message: "Driver has arrived at the pickup location."
-});
-
-        return;
+        alert("Driver reached pickup");
+        setDriverReachedPickup(true);
+        socket.emit("rideStarted",{rideId});
+       return;
       }
-
-      const coords = driverPath[index];
-      if (driverMarkerRef.current) {
-        driverMarkerRef.current.geometry = new Point({
-          longitude: coords.lng,
+const coords = driverPath[index];
+const newPoint = new Point({
+longitude: coords.lng,
           latitude: coords.lat,
           spatialReference: { wkid: 4326 },
-        });
+});
+      if (driverMarkerRef.current) {
+        driverMarkerRef.current.geometry = newPoint ;
       }
-    }, 1000); // move every second
+    }, 1000); 
 
     return () => clearInterval(intervalId);
   }, [driverPath]);
+  useEffect(() => {
+  if (!driverReachedPickup || dropoffPath.length === 0 || !markerLayerRef.current || !driverMarkerRef.current) return;
+
+  let index = 0;
+  const intervalId = setInterval(() => {
+    index++;
+    if (index >= dropoffPath.length) {
+      clearInterval(intervalId);
+      alert("Destination Reached : Ride Completed");
+      return;
+    }
+
+    const coords = dropoffPath[index];
+    const newPoint = new Point({
+      longitude: coords.lng,
+      latitude: coords.lat,
+      spatialReference: { wkid: 4326 },
+    });
+
+    if (driverMarkerRef.current) {
+      driverMarkerRef.current.geometry = newPoint;
+    }
+  }, 1000); 
+
+  return () => clearInterval(intervalId);
+}, [dropoffPath , driverReachedPickup]);
+
 
   return <div ref={mapRef} className="w-full h-[550px] rounded-xl shadow-lg" />;
 }

@@ -17,7 +17,7 @@ const io = new Server(server,{
     methods:["GET","POST","PUT"]
   }
 });
-const passengerSocketMap = new Map() ;
+const ridePassengerMap = {};
 global.io = io ;
 dotenv.config();
 app.use(cors({
@@ -41,7 +41,12 @@ app.get("/api/profile", verifyToken, (req, res) => {
   res.json({ message: "Welcome!", user: req.user });
 });
 io.on("connection",(socket)=>{
-  console.log("New Client Connected:",socket.id);
+   console.log("New Client Connected:",socket.id);
+  socket.on("registerPassenger",({rideId})=>{
+    ridePassengerMap[rideId] = socket.id ;
+console.log(`Passenger for ride ${rideId} registered with socket:${socket.id}`)
+  })
+ 
   socket.on("rideRequest",(data)=>{
     console.log("Ride request from passenger:",data);
     io.emit("newRideRequest",data);
@@ -53,6 +58,15 @@ io.on("connection",(socket)=>{
   socket.on("declineRide",({driverId,passengerId})=>{
     io.emit("driverDeclined",{driverId,passengerId});
   });
+  socket.on("rideStarted",({rideId})=>{
+    const passengerSocketId = ridePassengerMap[rideId];
+    console.log("Ride Started for rideId:",rideId," to passengerSocketId:",passengerSocketId);
+    if(passengerSocketId){
+    io.to(passengerSocketId).emit("rideStarted",{rideId});}
+    else {
+      console.warn(`No passenger found for ride ${rideId}`);
+    }
+  });
   socket.on("driverLocationUpdate",({driverId , coords})=>{
     io.emit("driverLocation",{driverId,coords});
   });
@@ -60,10 +74,10 @@ io.on("connection",(socket)=>{
     console.log("Client Disconnected:",socket.id);
   });
   socket.on("DriverReached", ({ rideId, passengerId, message }) => {
-  const passengerSocketId = getPassengerSocketId(passengerId);
-  if (passengerSocketId) {
-    io.to(passengerSocketId).emit("driverArrivedAlert", { rideId, message });
-  }
+  // const passengerSocketId = getPassengerSocketId(passengerId);
+  // if (passengerSocketId) {
+  //   io.to(passengerSocketId).emit("driverArrivedAlert", { rideId, message });
+  // }
 });
 
 })
