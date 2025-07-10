@@ -31,7 +31,7 @@ export default function PassengerDashboard() {
   const [assignedDriver, setAssignedDriver] = useState(null);
   const [requestDeclined, setRequestDeclined] = useState(false);
   const [fare, setFare] = useState(0);
-  const [rideId, setRideId] = useState(null); 
+  const [rideId, setRideId] = useState(null);
 
   const navigate = useNavigate();
 
@@ -100,8 +100,8 @@ export default function PassengerDashboard() {
       });
 
       const newRideId = res.data.rideId;
-      setRideId(newRideId); 
-      localStorage.setItem("rideId",newRideId);
+      setRideId(newRideId);
+      localStorage.setItem("rideId", newRideId);
       socket.emit("registerRequest")
       socket.emit("rideRequest", {
         rideId: newRideId,
@@ -118,7 +118,7 @@ export default function PassengerDashboard() {
 
       console.log("Ride stored & request sent");
     } catch (err) {
-      console.error("Booking failed", err,pickupCoords,dropoffCoords);
+      console.error("Booking failed", err, pickupCoords, dropoffCoords);
     }
   };
 
@@ -140,8 +140,8 @@ export default function PassengerDashboard() {
     socket.on("driverAccepted", handleAccept);
     socket.on("driverDeclined", handleDecline);
     socket.on("driverArrivedAlert", ({ rideId, message }) => {
-  alert(message,rideId); 
-});
+      alert(message, rideId);
+    });
 
 
     return () => {

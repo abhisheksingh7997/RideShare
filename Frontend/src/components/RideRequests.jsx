@@ -129,9 +129,9 @@ export default function RideRequests({ driver }) {
             pickupCoords={acceptedRide.pickupCoords}
             currentCoords={driverLocation}
             dropoffCoords={acceptedRide.dropoffCoords}
-            rideId = {acceptedRide.rideId}
+            rideId={acceptedRide.rideId}
 
-            
+
           />
         </div>
       ) : rideRequests.length === 0 ? (

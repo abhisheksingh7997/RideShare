@@ -1,9 +1,7 @@
-// src/utils/geocode.js
 import axios from "axios";
 
 const apiKey = "AAPTxy8BH1VEsoebNVZXo8HurLXOHfTw7xS6Y4MDf0mhJNkT2Mx73me4-Emx56Jk88fkLPhIybELc4YyguRQWqLlTjbH0zIx8IedfU1ruipV6kMJhTGRS_z5yVL8CcBIIEUmyGKv1NeKE_DX8TpEEWn2heEvd0x_LHxOSGu9Y3fN3FFPPs2zmb_JdsOVi0bOjfOOWsr6lEKPHvo_qJWih_nDz021oh42hWKjHAql_uzo9EQ.AT1_bV6fTXOy";
- 
-// ye function suggestions fetch karega arcgis ki api se .
+
 export const fetchSuggestions = async (input) => {
   if (!input.trim()) return [];
   try {
@@ -24,8 +22,7 @@ export const fetchSuggestions = async (input) => {
     return [];
   }
 };
- 
-// ye function address ke coordinates ko fetch karega arcgis se .
+
 
 export const geocodeAddress = async (address, magicKey = null) => {
   if (!address.trim()) return null;
@@ -38,7 +35,6 @@ export const geocodeAddress = async (address, magicKey = null) => {
           f: "json",
           singleLine: address,
           outFields: "Match_addr",
-        //   forStorage: true,  this will cause locations to not fetch never use it . 
           token: apiKey,
           ...(magicKey && { magicKey }),
         },

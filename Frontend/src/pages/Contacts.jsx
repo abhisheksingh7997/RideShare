@@ -4,7 +4,6 @@ export default function Contacts() {
   return (
     <section className="bg-gray-100 text-gray-800 py-16 px-4">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-        {/* Left: Contact Details */}
         <div>
           <h2 className="text-4xl font-bold mb-4 text-blue-600">Get in Touch</h2>
           <p className="text-gray-600 mb-8">
@@ -27,7 +26,6 @@ export default function Contacts() {
           </div>
         </div>
 
-        {/* Right: Contact Form */}
         <div className="bg-white p-8 rounded-xl shadow-lg">
           <form className="space-y-6">
             <div>

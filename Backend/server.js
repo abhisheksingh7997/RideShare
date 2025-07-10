@@ -74,10 +74,7 @@ console.log(`Passenger for ride ${rideId} registered with socket:${socket.id}`)
     console.log("Client Disconnected:",socket.id);
   });
   socket.on("DriverReached", ({ rideId, passengerId, message }) => {
-  // const passengerSocketId = getPassengerSocketId(passengerId);
-  // if (passengerSocketId) {
-  //   io.to(passengerSocketId).emit("driverArrivedAlert", { rideId, message });
-  // }
+
 });
 
 })

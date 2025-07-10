@@ -1,14 +1,12 @@
 function Phone() {
   return (
     <div className="relative bg-black text-white py-20 px-4 overflow-hidden transform transition duration-300 hover:scale-110">
-      {/* Background Image */}
       <img
         src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1600&q=80"
         alt="Taxi background"
         className="absolute top-0 left-0 w-full h-full object-cover opacity-30 z-0"
       />
 
-      {/* Phone images */}
       <div className="relative z-10 max-w-6xl mx-auto flex justify-center gap-12 items-center">
         <div className="bg-black border-4 border-gray-700 rounded-3xl p-2 shadow-inner">
           <img

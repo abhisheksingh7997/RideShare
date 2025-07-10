@@ -10,7 +10,7 @@ import PassengerDashboard from './pages/PassengerDashboard';
 import PageNotFound from './pages/PageNotFound';
 import Profile from './pages/Profile';
 import RideRequests from './components/RideRequests';
-import Earnings from './pages/Earnings' ;
+import Earnings from './pages/Earnings';
 
 
 
@@ -31,17 +31,10 @@ function App() {
           <Route path="/driverdashboard" element={<DriverDashboard />} />
           <Route path="/passengerdashboard" element={<PassengerDashboard />} />
           <Route path="/rideRequests" element={<RideRequests />} />
-           <Route path="/earnings" element={<Earnings/>} />
-
-
-
+          <Route path="/earnings" element={<Earnings />} />
           <Route path="*" element={<PageNotFound />} />
-
         </Routes>
-
-
       </Router>
-
     </>
   )
 }

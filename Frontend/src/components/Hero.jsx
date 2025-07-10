@@ -7,7 +7,6 @@ function Hero() {
       <Navbar />
       <header className="relative min-h-screen text-white bg-black px-6 pt-28 pb-14 overflow-hidden">
 
-        {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
@@ -18,10 +17,8 @@ function Hero() {
           }}
         />
 
-        {/* Overlay for text readability */}
         <div className="absolute inset-0 bg-black bg-opacity-60 z-0" />
 
-        {/* Hero content */}
         <div className="relative z-10 max-w-4xl mx-auto mt-40 p-8 text-white text-center">
           <h2 className="text-5xl md:text-6xl font-extrabold leading-tight  hover:text-blue-200">
             Book a Taxi to <br /> Your Destination in Style

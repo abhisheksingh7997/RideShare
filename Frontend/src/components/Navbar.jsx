@@ -25,7 +25,6 @@ function Navbar() {
           Ride<span className="text-white">Share</span>
         </Link>
 
-        {/* Desktop Nav Links */}
         <ul className="hidden md:flex gap-8 text-base font-medium text-white">
           <li>
             <Link to="/features" className="hover:text-blue-500 transition">
@@ -55,7 +54,6 @@ function Navbar() {
           </li>
         </ul>
 
-        {/* CTA Button for Desktop */}
         {pathname === "/" && (
           <Link
             to="https://www.bing.com/ck/a?!&&p=9119a021e352b2c07a7d9cf509a2c19aa290d0ea7c0ae6dc0d61714739a8fb95JmltdHM9MTc1MTQxNDQwMA&ptn=3&ver=2&hsh=4&fclid=30d86302-60d1-6634-24a8-76fd61bf6774&psq=play+store&u=a1aHR0cHM6Ly9wbGF5Lmdvb2dsZS5jb20v&ntb=1" // playstore link
@@ -82,7 +80,6 @@ function Navbar() {
           </button>
         )}
 
-        {/* Mobile Toggle Icon */}
         <div className="md:hidden text-white" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <X size={28} /> : <Menu size={28} />}
         </div>
@@ -127,7 +124,6 @@ function Navbar() {
             Profile
           </Link>
 
-          {/* Mobile Conditional Buttons */}
           {pathname === "/" && (
             <Link
               to="/download"

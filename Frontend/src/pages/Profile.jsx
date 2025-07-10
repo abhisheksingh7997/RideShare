@@ -43,7 +43,7 @@ export default function Profile() {
           </div>
 
           <h2 className="text-2xl font-bold text-gray-800">
-            Welcome, {user.username} 👋
+            Welcome, {user.username}
           </h2>
 
           <div className="text-gray-600 space-y-2">

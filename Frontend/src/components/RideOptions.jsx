@@ -31,8 +31,8 @@ function RideOptions({ selected, onSelect }) {
                     key={type}
                     onClick={() => handleSelect(type)}
                     className={`flex flex-col items-center p-6 rounded-xl cursor-pointer transition-all border-2 ${selectedOption === type
-                            ? "border-blue-500 bg-blue-900/30"
-                            : "border-gray-700 hover:border-blue-400"
+                        ? "border-blue-500 bg-blue-900/30"
+                        : "border-gray-700 hover:border-blue-400"
                         }`}
                 >
                     <img src={icon} alt={type} className="w-16 h-16 mb-4" />

@@ -1,6 +1,5 @@
 
 function Earnings() {
-  // Sample earnings data
   const earnings = {
     total: 2450,
     rides: 12,

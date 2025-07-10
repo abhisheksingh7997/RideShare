@@ -21,9 +21,8 @@ export default function DriverNavbar() {
       </div>
 
       <div
-        className={`flex-col md:flex-row md:flex md:items-center md:justify-between ${
-          menuOpen ? "flex" : "hidden"
-        } mt-4 md:mt-0`}
+        className={`flex-col md:flex-row md:flex md:items-center md:justify-between ${menuOpen ? "flex" : "hidden"
+          } mt-4 md:mt-0`}
       >
         <div className="flex flex-col md:flex-row md:space-x-6 space-y-2 md:space-y-0">
           <button
@@ -38,12 +37,12 @@ export default function DriverNavbar() {
           >
             Dashboard
           </button>
-           <button onClick={()=>navigate("/earnings")}
+          <button onClick={() => navigate("/earnings")}
             className="hover:bg-gray-700 px-4 py-2 rounded text-left"
           >
             Earnings
           </button>
-          <button onClick={()=>navigate("/contacts")}
+          <button onClick={() => navigate("/contacts")}
             className="hover:bg-gray-700 px-4 py-2 rounded text-left"
           >
             Contact

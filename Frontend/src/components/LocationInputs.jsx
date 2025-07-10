@@ -23,7 +23,6 @@ export default function LocationInputs({
 }) {
   return (
     <div className="w-full">
-      {/* Pickup Input */}
       <div className="relative">
         <div className="flex items-center bg-gray-100 p-3 rounded-md border-2
          focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -56,7 +55,6 @@ export default function LocationInputs({
         ))}
       </div>
 
-      {/* Dropoff Input */}
       <div className="relative mt-4">
         <div className="flex items-center bg-gray-100 p-3 rounded-md text-black border-2 border-blue-950">
           <span className="mr-2">⬇️</span>
@@ -88,7 +86,6 @@ export default function LocationInputs({
         ))}
       </div>
 
-      {/* Date & Time Selectors */}
       <div className="flex flex-col sm:flex-row gap-4 mt-6">
         <div className="flex items-center bg-gray-100 p-3 rounded-md w-full sm:w-1/2">
           <CalendarDaysIcon className="h-5 w-5 mr-2 text-gray-700" />
@@ -116,7 +113,6 @@ export default function LocationInputs({
         </div>
       </div>
 
-      {/* Buttons */}
       <div className="mt-8 flex gap-4 flex-wrap">
 
 
