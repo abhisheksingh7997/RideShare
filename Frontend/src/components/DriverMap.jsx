@@ -20,6 +20,7 @@ export default function DriverMap({ pickupCoords, dropoffCoords, onRouteInfo,rid
   const driverMarkerRef = useRef();
   const [driverPath, setDriverPath] = useState([]);
   const [dropoffPath , setDropoffPath] = useState([]);
+  const [rideComplete , setRideComplete] = useState(false);
   const [driverReachedPickup , setDriverReachedPickup]= useState(false);
   useEffect(() => {
     if (!mapRef.current) return;
@@ -204,7 +205,7 @@ try {
       index++;
       if (index >= driverPath.length) {
         clearInterval(intervalId);
-        alert("Driver reached pickup");
+        alert("Pickup Location Reached : Start Ride!!");
         setDriverReachedPickup(true);
         socket.emit("rideStarted",{rideId});
        return;
@@ -231,6 +232,9 @@ longitude: coords.lng,
     if (index >= dropoffPath.length) {
       clearInterval(intervalId);
       alert("Destination Reached : Ride Completed");
+      markerLayerRef.current?.removeAll();
+      mapViewRef.current?.destroy() ;
+      setRideComplete(true);
       return;
     }
 
@@ -250,5 +254,13 @@ longitude: coords.lng,
 }, [dropoffPath , driverReachedPickup]);
 
 
-  return <div ref={mapRef} className="w-full h-[550px] rounded-xl shadow-lg" />;
+  return (
+    !rideComplete?(
+  <div ref={mapRef} className="w-full h-[550px] rounded-xl shadow-lg" />):(
+    <div className="text-center text-green-500 text-lg font-bold mt-4">
+      Ride Completed SuccessFully!!
+    </div>
+  )
+
+);
 }

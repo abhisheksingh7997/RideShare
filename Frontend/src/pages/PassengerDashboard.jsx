@@ -10,10 +10,10 @@ import axios from "axios";
 import RideOptions from "../components/RideOptions";
 import DriverSearching from "../components/DriverSearching";
 import Pricing from "./Pricing";
-import Feedback from "./Feedback";
 import Contacts from "./Contacts";
 import Footer from "./Footer";
 import DriverFoundCard from "../components/DriverFoundCard";
+import CustomerFeedback from "../components/CustomerFeedback";
 
 export default function PassengerDashboard() {
   const [pickup, setPickup] = useState("");
@@ -122,7 +122,6 @@ export default function PassengerDashboard() {
     }
   };
 
-  // Socket listeners for driver response
   useEffect(() => {
     const handleAccept = ({ driver, passengerId }) => {
       if (passengerId === user?.id) {
@@ -141,7 +140,7 @@ export default function PassengerDashboard() {
     socket.on("driverAccepted", handleAccept);
     socket.on("driverDeclined", handleDecline);
     socket.on("driverArrivedAlert", ({ rideId, message }) => {
-  alert(message,rideId); // or show toast / modal
+  alert(message,rideId); 
 });
 
 
@@ -218,8 +217,9 @@ export default function PassengerDashboard() {
           )}
         </div>
       </div>
+      <CustomerFeedback />
+
       <Pricing />
-      <Feedback />
       <Contacts />
       <Footer />
     </div>

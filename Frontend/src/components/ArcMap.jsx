@@ -10,19 +10,20 @@ import FeatureSet from "@arcgis/core/rest/support/FeatureSet";
 import * as route from "@arcgis/core/rest/route";
 import socket from "../utils/socket";
 
-esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurLXOHfTw7xS6Y4MDf0mhJNkT2Mx73me4-Emx56Jk88fkLPhIybELc4YyguRQWqLlTjbH0zIx8IedfU1ruipV6kMJhTGRS_z5yVL8CcBIIEUmyGKv1NeKE_DX8TpEEWn2heEvd0x_LHxOSGu9Y3fN3FFPPs2zmb_JdsOVi0bOjfOOWsr6lEKPHvo_qJWih_nDz021oh42hWKjHAql_uzo9EQ.AT1_bV6fTXOy"; 
+esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurLXOHfTw7xS6Y4MDf0mhJNkT2Mx73me4-Emx56Jk88fkLPhIybELc4YyguRQWqLlTjbH0zIx8IedfU1ruipV6kMJhTGRS_z5yVL8CcBIIEUmyGKv1NeKE_DX8TpEEWn2heEvd0x_LHxOSGu9Y3fN3FFPPs2zmb_JdsOVi0bOjfOOWsr6lEKPHvo_qJWih_nDz021oh42hWKjHAql_uzo9EQ.AT1_bV6fTXOy";
 export default function ArcMap({ pickupCoords, dropoffCoords, onRouteInfo }) {
   const mapRef = useRef();
   const markerLayerRef = useRef();
-  const animatedMarkerRef = useRef() ;
-  const [dropoffPath , setDropoffPath] = useState([]);
-  const [rideStarted,setRideStarted]=useState(false);
-  const rideId = parseInt(localStorage.getItem("rideId")) ;
-  useEffect(()=>{
-    if(!rideId) return ;
-    console.log("Registering passenger with rideId : ",rideId);
-    socket.emit("registerPassenger",{rideId});
-  },[rideId]);
+  const animatedMarkerRef = useRef();
+  const [dropoffPath, setDropoffPath] = useState([]);
+  const [rideStarted, setRideStarted] = useState(false);
+  const [rideComplete, setRideComplete] = useState(false);
+  const rideId = parseInt(localStorage.getItem("rideId"));
+  useEffect(() => {
+    if (!rideId) return;
+    console.log("Registering passenger with rideId : ", rideId);
+    socket.emit("registerPassenger", { rideId });
+  }, [rideId]);
   useEffect(() => {
     if (!mapRef.current || !pickupCoords || !dropoffCoords) return;
 
@@ -88,11 +89,11 @@ export default function ArcMap({ pickupCoords, dropoffCoords, onRouteInfo }) {
       const routeGraphic = result.routeResults[0].route;
       routeGraphic.symbol = {
         type: "simple-line",
-        color: [0, 255, 0], 
+        color: [0, 255, 0],
         width: 4,
       };
       markerLayer.add(routeGraphic);
-      const path = routeGraphic.geometry.paths[0].map(([lng,lat])=>({lng,lat}));
+      const path = routeGraphic.geometry.paths[0].map(([lng, lat]) => ({ lng, lat }));
       setDropoffPath(path);
 
       const attributes = routeGraphic.attributes;
@@ -110,57 +111,67 @@ export default function ArcMap({ pickupCoords, dropoffCoords, onRouteInfo }) {
     return () => view?.destroy();
   }, [pickupCoords, dropoffCoords]);
 
+
   useEffect(() => {
-  if (!rideStarted || dropoffPath.length === 0 || !markerLayerRef.current) return;
+    socket.on("rideStarted", ({ rideId }) => {
+      console.log("Ride started for rideId:", rideId);
+      setRideStarted(true);
+    });
+    return () => socket.off("rideStarted");
+  }, []);
 
-  const markerLayer = markerLayerRef.current;
-  let index = 0;
+  useEffect(() => {
+    if (!rideStarted || dropoffPath.length === 0 || !markerLayerRef.current) return;
 
-  const carSymbol = {
-    type: "simple-marker",
-    color: "blue",
-    size: 10,
-    outline: { color: "white", width: 1 },
-  };
+    const markerLayer = markerLayerRef.current;
+    let index = 0;
 
-  const startPoint = new Point({
-    longitude: dropoffPath[0].lng,
-    latitude: dropoffPath[0].lat,
-    spatialReference: { wkid: 4326 },
-  });
+    const carSymbol = {
+      type: "simple-marker",
+      color: "blue",
+      size: 10,
+      outline: { color: "white", width: 1 },
+    };
 
-  const carGraphic = new Graphic({ geometry: startPoint, symbol: carSymbol });
-  markerLayer.add(carGraphic);
-  animatedMarkerRef.current = carGraphic;
-
-  const interval = setInterval(() => {
-    index++;
-    if (index >= dropoffPath.length) {
-      clearInterval(interval);
-      alert("Ride Completed");
-      return;
-    }
-
-    const point = new Point({
-      longitude: dropoffPath[index].lng,
-      latitude: dropoffPath[index].lat,
+    const startPoint = new Point({
+      longitude: dropoffPath[0].lng,
+      latitude: dropoffPath[0].lat,
       spatialReference: { wkid: 4326 },
     });
 
-    if (animatedMarkerRef.current) {
-      animatedMarkerRef.current.geometry = point;
-    }
-  }, 1000);
+    const carGraphic = new Graphic({ geometry: startPoint, symbol: carSymbol });
+    markerLayer.add(carGraphic);
+    animatedMarkerRef.current = carGraphic;
 
-  return () => clearInterval(interval);
-}, [rideStarted , dropoffPath]);
-useEffect(()=>{
-  socket.on("rideStarted",({rideId})=>{
-    console.log("Ride started for rideId:",rideId);
-    setRideStarted(true);
-  });
-  return ()=>socket.off("rideStarted");
-},[]);
+    const interval = setInterval(() => {
+      index++;
+      if (index >= dropoffPath.length) {
+        clearInterval(interval);
+        alert("Ride Completed");
+        setRideComplete(true);
+        return;
+      }
 
-  return <div ref={mapRef} className="w-full h-[550px] rounded-xl shadow-lg" />;
+      const point = new Point({
+        longitude: dropoffPath[index].lng,
+        latitude: dropoffPath[index].lat,
+        spatialReference: { wkid: 4326 },
+      });
+
+      if (animatedMarkerRef.current) {
+        animatedMarkerRef.current.geometry = point;
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [rideStarted, dropoffPath]);
+
+  return (
+    !rideComplete ? (
+      <div ref={mapRef} className="w-full h-[550px] rounded-xl shadow-lg" />) : (
+      <div className="text-center text-green-500 text-lg font-bold mt-4">
+        Ride Completed SuccessFully!!
+      </div>
+    )
+  )
 }
