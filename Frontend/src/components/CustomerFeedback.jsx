@@ -37,4 +37,4 @@ function CustomerFeedback({onSubmit}) {
   )
 }
 
-export default CustomerFeedback
+export default CustomerFeedback ;

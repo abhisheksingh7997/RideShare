@@ -235,6 +235,8 @@ export default function DriverMap({ pickupCoords, dropoffCoords, onRouteInfo, ri
         markerLayerRef.current?.removeAll();
         mapViewRef.current?.destroy();
         setRideComplete(true);
+        socket.emit("rideCompleted", { rideId });
+
         return;
       }
 

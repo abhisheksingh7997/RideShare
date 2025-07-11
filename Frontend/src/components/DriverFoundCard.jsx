@@ -1,9 +1,22 @@
+import { useEffect, useState } from 'react';
 import { FaPhoneAlt, FaComments } from 'react-icons/fa';
+import socket from '../utils/socket';
+import CustomerFeedback from './CustomerFeedback';
 
-export default function DriverFoundCard({ driver, distance, time ,fare}) {
-
-  
+export default function DriverFoundCard({ driver, distance, time ,fare }) {
+const [rideCompleted , setRideCompleted] = useState(false); 
+  useEffect(()=>{
+    socket.on("rideCompleted",({rideId})=>{
+      console.log("Ride Completed",rideId);
+      setRideCompleted(true);
+    });
+    return ()=>{
+      socket.off("rideCompleted");
+    };
+  },[]);
   return (
+    <>
+    {!rideCompleted ? (
     <div className="border p-6 rounded-xl shadow-lg bg-gray-800 w-full max-w-md text-white">
       <h2 className="text-xl font-semibold mb-4">Driver Found</h2>
 
@@ -24,7 +37,7 @@ export default function DriverFoundCard({ driver, distance, time ,fare}) {
           <p><strong>Estimated Distance:</strong> {distance.toFixed(2)} km</p>
 
           <p><strong>Estimated Time:</strong> {time}</p>
-          <p><strong>Estimated Price:</strong> ₹{fare}</p>
+          <p><strong>Estimated Price:</strong> ₹{fare.toFixed(2)}</p>
 
         </div>
       )}
@@ -39,7 +52,10 @@ export default function DriverFoundCard({ driver, distance, time ,fare}) {
           <FaComments /> Message
         </button>
       </div>
-    </div>
+    </div>):(
+      <CustomerFeedback />)
+    }
+  </>
 
   )
 

@@ -13,7 +13,6 @@ import Pricing from "./Pricing";
 import Contacts from "./Contacts";
 import Footer from "./Footer";
 import DriverFoundCard from "../components/DriverFoundCard";
-import CustomerFeedback from "../components/CustomerFeedback";
 
 export default function PassengerDashboard() {
   const [pickup, setPickup] = useState("");
@@ -217,7 +216,6 @@ export default function PassengerDashboard() {
           )}
         </div>
       </div>
-      <CustomerFeedback />
 
       <Pricing />
       <Contacts />

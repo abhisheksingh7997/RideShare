@@ -149,6 +149,7 @@ export default function ArcMap({ pickupCoords, dropoffCoords, onRouteInfo }) {
         clearInterval(interval);
         alert("Ride Completed");
         setRideComplete(true);
+
         return;
       }
 

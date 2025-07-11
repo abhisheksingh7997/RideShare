@@ -7,7 +7,7 @@ export default function RideRequests({ driver }) {
   const [rideRequests, setRideRequests] = useState([]);
   const [acceptedRide, setAcceptedRide] = useState(null);
   const [driverLocation, setDriverLocation] = useState(null);
-  const [liveRouteInfo, setLiveRouteInfo] = useState(null);
+  // const [liveRouteInfo, setLiveRouteInfo] = useState(null);
   useEffect(() => {
     const registerDriver = () => {
       if (driver) {
@@ -74,7 +74,7 @@ export default function RideRequests({ driver }) {
 
     setAcceptedRide(ride);
     setRideRequests([]);
-    setLiveRouteInfo(null);
+    // setLiveRouteInfo(null);
   };
 
   const handleDecline = async (ride) => {
@@ -110,17 +110,18 @@ export default function RideRequests({ driver }) {
             <p><strong>Dropoff:</strong> {acceptedRide.dropoff}</p>
             <p><strong>Type:</strong> {acceptedRide.rideType}</p>
 
-            {liveRouteInfo ? (
+            {/* {liveRouteInfo ? (
               <>
                 <p><strong>Live Distance:</strong> {liveRouteInfo.distance.toFixed(2)} km</p>
                 <p><strong>Live Time:</strong> {liveRouteInfo.formattedTime}</p>
               </>
-            ) : (
+            ) : ( */}
+            (
               <>
-                <p><strong>Distance:</strong> {acceptedRide.distance} km</p>
+                <p><strong>Distance:</strong> {acceptedRide.distance.toFixed(2)} km</p>
                 <p><strong>Time:</strong> {acceptedRide.time}</p>
               </>
-            )}
+            )
 
             <p><strong>Fare:</strong> ₹{acceptedRide.fare.toFixed(2)}</p>
           </div>
@@ -146,7 +147,7 @@ export default function RideRequests({ driver }) {
               <p><strong>Pickup:</strong> {ride.pickup}</p>
               <p><strong>Dropoff:</strong> {ride.dropoff}</p>
               <p><strong>Type:</strong> {ride.rideType}</p>
-              <p><strong>Distance:</strong> {ride.distance} km</p>
+              <p><strong>Distance:</strong> {ride.distance.toFixed(2)} km</p>
               <p><strong>Time:</strong> {ride.time}</p>
               <p><strong>Fare:</strong> ₹{ride.fare.toFixed(2)}</p>
             </div>

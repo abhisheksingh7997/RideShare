@@ -70,12 +70,19 @@ console.log(`Passenger for ride ${rideId} registered with socket:${socket.id}`)
   socket.on("driverLocationUpdate",({driverId , coords})=>{
     io.emit("driverLocation",{driverId,coords});
   });
+  socket.on("rideCompleted",({rideId})=>{
+    const passengerSocketId = ridePassengerMap[rideId];
+    console.log("Ride Completed for rideId:",rideId," to passengerSocketId:",passengerSocketId);
+    if(passengerSocketId){
+    io.to(passengerSocketId).emit("rideCompleted",{rideId});}
+    else {
+      console.warn(`No passenger found for ride ${rideId}`);
+    }
+  });
   socket.on("disconnect",()=>{
     console.log("Client Disconnected:",socket.id);
   });
-  socket.on("DriverReached", ({ rideId, passengerId, message }) => {
 
-});
 
 })
 
