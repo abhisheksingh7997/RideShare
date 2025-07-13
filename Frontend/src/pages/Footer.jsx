@@ -34,8 +34,8 @@ function Footer() {
 
         <div>
           <h3 className="text-xl font-semibold mb-3">Get in Touch</h3>
-          <p className="text-base text-gray-400">Email: support@restfultaxi.com</p>
-          <p className="text-base text-gray-400">Phone: +91 98765 43210</p>
+          <p className="text-base text-gray-400 hover:text-yellow-400"><a href="https://gmail.com">Email: support@restfultaxi.com</a></p>
+          <p className="text-base text-gray-400 hover:text-yellow-400"><a href="tel:+919876543210">Phone: +91 98765 43210</a></p>
           <div className="flex space-x-6 mt-4">
             <a href="https://meta.com/" className="hover:text-yellow-400">Facebook</a>
             <a href="https://twitter.com/" className="hover:text-yellow-400">Twitter</a>

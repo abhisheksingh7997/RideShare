@@ -52,9 +52,18 @@ const [rideCompleted , setRideCompleted] = useState(false);
           <FaComments /> Message
         </button>
       </div>
-    </div>):(
-      <CustomerFeedback />)
-    }
+    </div>):(<>
+      <CustomerFeedback />
+    <div className="text-center mt-6">
+  <button
+    onClick={() => window.location.reload()}
+    className="bg-blue-600 hover:bg-blue-800 text-white px-6 py-3 rounded-lg font-semibold transition"
+  >
+    Book New Ride
+  </button>
+</div>
+</>)
+}
   </>
 
   )

@@ -67,8 +67,14 @@ console.log(`Passenger for ride ${rideId} registered with socket:${socket.id}`)
       console.warn(`No passenger found for ride ${rideId}`);
     }
   });
-  socket.on("driverLocationUpdate",({driverId , coords})=>{
-    io.emit("driverLocation",{driverId,coords});
+  socket.on("driverLocationUpdate",({rideId , driverId , coords})=>{
+   const passengerSocketId = ridePassengerMap[rideId] ;
+   if(passengerSocketId){
+    io.to(passengerSocketId).emit("driverLocationUpdate",{rideId,coords});
+   }
+   else{
+    console.warn(`No passenger found for ride ${rideId}`);
+   }
   });
   socket.on("rideCompleted",({rideId})=>{
     const passengerSocketId = ridePassengerMap[rideId];

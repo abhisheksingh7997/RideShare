@@ -7,7 +7,6 @@ export default function RideRequests({ driver }) {
   const [rideRequests, setRideRequests] = useState([]);
   const [acceptedRide, setAcceptedRide] = useState(null);
   const [driverLocation, setDriverLocation] = useState(null);
-  // const [liveRouteInfo, setLiveRouteInfo] = useState(null);
   useEffect(() => {
     const registerDriver = () => {
       if (driver) {
@@ -74,7 +73,6 @@ export default function RideRequests({ driver }) {
 
     setAcceptedRide(ride);
     setRideRequests([]);
-    // setLiveRouteInfo(null);
   };
 
   const handleDecline = async (ride) => {
@@ -110,12 +108,6 @@ export default function RideRequests({ driver }) {
             <p><strong>Dropoff:</strong> {acceptedRide.dropoff}</p>
             <p><strong>Type:</strong> {acceptedRide.rideType}</p>
 
-            {/* {liveRouteInfo ? (
-              <>
-                <p><strong>Live Distance:</strong> {liveRouteInfo.distance.toFixed(2)} km</p>
-                <p><strong>Live Time:</strong> {liveRouteInfo.formattedTime}</p>
-              </>
-            ) : ( */}
             (
               <>
                 <p><strong>Distance:</strong> {acceptedRide.distance.toFixed(2)} km</p>

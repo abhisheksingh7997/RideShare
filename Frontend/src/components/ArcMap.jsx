@@ -111,6 +111,42 @@ export default function ArcMap({ pickupCoords, dropoffCoords, onRouteInfo }) {
     return () => view?.destroy();
   }, [pickupCoords, dropoffCoords]);
 
+useEffect(() => {
+  const markerLayer = markerLayerRef.current;
+  if (!markerLayer) return; 
+
+  const driverSymbol = {
+    type: "simple-marker", 
+    color: "yellow",
+    outline: { color: "white", width: 1 },
+  };
+
+  let driverGraphic;
+
+  socket.on("driverLocationUpdate", ({ rideId: incomingId, coords }) => {
+    const myRideId = parseInt(localStorage.getItem("rideId"));
+    if (myRideId !== incomingId) return;
+
+    if (!markerLayerRef.current) return; 
+
+    const point = new Point({
+      longitude: coords.lng,
+      latitude: coords.lat,
+      spatialReference: { wkid: 4326 },
+    });
+
+    if (!driverGraphic) {
+      driverGraphic = new Graphic({ geometry: point, symbol: driverSymbol });
+      markerLayerRef.current.add(driverGraphic);
+    } else {
+      driverGraphic.geometry = point;
+    }
+  });
+
+  return () => {
+    socket.off("driverLocationUpdate");
+  };
+}, []);
 
   useEffect(() => {
     socket.on("rideStarted", ({ rideId }) => {

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
 import ArcMap from "../components/ArcMap";
 import LocationInputs from "../components/LocationInputs";
 import UserGreeting from "../components/UserGreeting";
@@ -13,6 +12,8 @@ import Pricing from "./Pricing";
 import Contacts from "./Contacts";
 import Footer from "./Footer";
 import DriverFoundCard from "../components/DriverFoundCard";
+import PassengerNavbar from "../components/PassengerNavbar";
+import Features from "./Features";
 
 export default function PassengerDashboard() {
   const [pickup, setPickup] = useState("");
@@ -151,7 +152,7 @@ export default function PassengerDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-950 text-white font-sans">
-      <Navbar />
+      <PassengerNavbar/>
       <div className="flex flex-col items-center px-4 py-10 pt-28 max-w-7xl mx-auto">
         <div className="w-full flex flex-col lg:flex-row gap-10 lg:gap-20 justify-between">
           <div className="flex-1">
@@ -218,6 +219,7 @@ export default function PassengerDashboard() {
       </div>
 
       <Pricing />
+      <Features/>
       <Contacts />
       <Footer />
     </div>

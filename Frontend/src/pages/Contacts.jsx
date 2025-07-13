@@ -17,7 +17,7 @@ export default function Contacts() {
             </div>
             <div className="flex items-center gap-4">
               <Mail className="text-blue-600" />
-              <span>support@taxiride.com</span>
+              <span>support@rideshare.com</span>
             </div>
             <div className="flex items-center gap-4">
               <MapPin className="text-blue-600" />
