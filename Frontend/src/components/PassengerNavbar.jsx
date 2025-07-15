@@ -48,7 +48,7 @@ function PassengerNavbar() {
           </li>
           <li>
             <button onClick={() => navigate("/profile")} className="w-10 h-10 rounded-full overflow-hidden bg-gray-400 flex items-center justify-center shadow hover:bg-blue-500">
-              <img src="https://cdn-icons-png.flaticon.com/128/3641/3641419.png" alt="profile" className="w-12 h-12 object-cover" />
+              <img src="https://cdn-icons-png.flaticon.com/512/4792/4792944.png" alt="profile" className="w-12 h-12 object-cover" />
             </button>
 
           </li>

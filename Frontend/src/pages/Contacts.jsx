@@ -1,8 +1,34 @@
 import { Mail, Phone, MapPin } from "lucide-react";
+import { useRef } from "react";
+import emailjs from "emailjs-com";
 
 export default function Contacts() {
+  const formRef = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm(
+        "service_2kvhmx4",       
+        "template_ry95h5f",      
+        formRef.current,
+        "oUA5GjTlkAXbHeV8m"           
+      )
+      .then(
+        (result) => {
+          alert("Message sent successfully!",result);
+          formRef.current.reset();
+        },
+        (error) => {
+          alert("Failed to send message. Please try again.");
+          console.error(error);
+        }
+      );
+  };
+
   return (
-    <section className="bg-gray-100 text-gray-800 py-16 px-4">
+    <section className="bg-gray-100 text-gray-800 py-16 px-4" id="contacts">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
         <div>
           <h2 className="text-4xl font-bold mb-4 text-blue-600">Get in Touch</h2>
@@ -27,12 +53,14 @@ export default function Contacts() {
         </div>
 
         <div className="bg-white p-8 rounded-xl shadow-lg">
-          <form className="space-y-6">
+          <form ref={formRef} onSubmit={sendEmail} className="space-y-6">
             <div>
               <label className="block text-sm font-medium mb-1">Your Name</label>
               <input
                 type="text"
+                name="name"
                 placeholder="Enter Your Name..."
+                required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -40,15 +68,19 @@ export default function Contacts() {
               <label className="block text-sm font-medium mb-1">Your Email</label>
               <input
                 type="email"
+                name="email"
                 placeholder="Enter Your Email..."
+                required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Message</label>
               <textarea
+                name="message"
                 rows="5"
                 placeholder="Type your message..."
+                required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
               ></textarea>
             </div>

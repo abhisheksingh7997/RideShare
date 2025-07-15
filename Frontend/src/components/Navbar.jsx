@@ -28,7 +28,6 @@ function Navbar() {
         <ul className="hidden md:flex gap-8 text-base font-medium text-white items-center">
           {pathname === "/" ? (
             <>
-
               <li>
                 <a href="#pricing" className="hover:text-blue-500 transition">
                   Pricing
@@ -74,18 +73,6 @@ function Navbar() {
               </li>
             </>
           )}
-          <li>
-            <button
-              onClick={() => navigate("/profile")}
-              className="w-10 h-10 rounded-full overflow-hidden bg-gray-400 flex items-center justify-center shadow hover:bg-blue-500"
-            >
-              <img
-                src="https://cdn-icons-png.flaticon.com/128/3641/3641419.png"
-                alt="profile"
-                className="w-12 h-12 object-cover"
-              />
-            </button>
-          </li>
         </ul>
 
         {pathname === "/" && (
@@ -144,14 +131,6 @@ function Navbar() {
               </Link>
             </>
           )}
-
-          <Link
-            to="/profile"
-            onClick={() => setIsOpen(false)}
-            className="block hover:text-blue-500"
-          >
-            Profile
-          </Link>
 
           {pathname === "/" && (
             <a
