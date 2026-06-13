@@ -11,6 +11,11 @@ import PageNotFound from './pages/PageNotFound';
 import Profile from './pages/Profile';
 import RideRequests from './components/RideRequests';
 import Earnings from './pages/Earnings';
+<<<<<<< HEAD
+=======
+import Features from './pages/Features';
+import ProtectedRoute from './auth/ProtectedRoute';
+>>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
 
 
 
@@ -24,6 +29,15 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+<<<<<<< HEAD
+=======
+          <Route element={<ProtectedRoute allowedRoles={["passenger"]}/>}>
+          <Route path='/passengerdashboard' element={<PassengerDashboard/>}/>
+          </Route>
+          <Route element={<ProtectedRoute allowedRoles={["driver"]}/>}>
+          <Route path='/driverdashboard' element={<DriverDashboard/>}/>
+          </Route>
+>>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/feedback" element={<Feedback />} />
           <Route path="/contacts" element={<Contacts />} />
@@ -32,6 +46,10 @@ function App() {
           <Route path="/passengerdashboard" element={<PassengerDashboard />} />
           <Route path="/rideRequests" element={<RideRequests />} />
           <Route path="/earnings" element={<Earnings />} />
+<<<<<<< HEAD
+=======
+          <Route path="/features" element={<Features />} />
+>>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Router>

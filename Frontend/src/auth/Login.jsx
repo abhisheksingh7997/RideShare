@@ -16,10 +16,15 @@ function Login() {
       const res = await api.post("/auth/login", credentials);
       alert(res.data.message || "Login successful");
 
+<<<<<<< HEAD
       // store token and role .
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("role", res.data.role);
       // redirect based on role .
+=======
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("role", res.data.role);
+>>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
       if (res.data.role === "driver") {
         navigate("/driverdashboard");
       }

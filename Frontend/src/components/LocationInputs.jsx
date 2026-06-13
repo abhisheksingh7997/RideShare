@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import { CalendarDaysIcon, ClockIcon } from "@heroicons/react/24/outline";
+=======
+>>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
 
 export default function LocationInputs({
 
@@ -14,10 +17,14 @@ export default function LocationInputs({
   geocodeAddress,
   setPickupCoords,
   setDropoffCoords,
+<<<<<<< HEAD
   date,
   setDate,
   time,
   setTime,
+=======
+ 
+>>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
   handleBookRide,
 
 }) {
@@ -85,6 +92,7 @@ export default function LocationInputs({
           </div>
         ))}
       </div>
+<<<<<<< HEAD
 
       <div className="flex flex-col sm:flex-row gap-4 mt-6">
         <div className="flex items-center bg-gray-100 p-3 rounded-md w-full sm:w-1/2">
@@ -117,6 +125,10 @@ export default function LocationInputs({
 
 
         <button
+=======
+<div className="mt-8 flex gap-4 flex-wrap">
+<button
+>>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
           onClick={() => handleBookRide()}
           className="bg-blue-500 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-900 transition"
         >

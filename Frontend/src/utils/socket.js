@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 class NativeSocket {
   constructor(url) {
     this.url = url;
@@ -76,4 +77,8 @@ class NativeSocket {
 }
 
 const socket = new NativeSocket("ws://localhost:5000/socket");
+=======
+import {io} from "socket.io-client";
+const socket = io("http://localhost:5000");
+>>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
 export default socket;
