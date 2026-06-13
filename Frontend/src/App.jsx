@@ -11,11 +11,6 @@ import PageNotFound from './pages/PageNotFound';
 import Profile from './pages/Profile';
 import RideRequests from './components/RideRequests';
 import Earnings from './pages/Earnings';
-<<<<<<< HEAD
-=======
-import Features from './pages/Features';
-import ProtectedRoute from './auth/ProtectedRoute';
->>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
 
 
 

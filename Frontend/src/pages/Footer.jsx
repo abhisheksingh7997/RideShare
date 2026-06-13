@@ -18,11 +18,7 @@ function Footer() {
             <li><Link to="/" className="hover:text-yellow-400">Home</Link></li>
             <li><Link to="/features" className="hover:text-yellow-400">Features</Link></li>
             <li><Link to="/pricing" className="hover:text-yellow-400">Pricing</Link></li>
-<<<<<<< HEAD
             <li><Link to="/contact" className="hover:text-yellow-400">Contact</Link></li>
-=======
-            <li><Link to="/contacts" className="hover:text-yellow-400">Contact</Link></li>
->>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
           </ul>
         </div>
 
@@ -38,13 +34,8 @@ function Footer() {
 
         <div>
           <h3 className="text-xl font-semibold mb-3">Get in Touch</h3>
-<<<<<<< HEAD
           <p className="text-base text-gray-400">Email: support@restfultaxi.com</p>
           <p className="text-base text-gray-400">Phone: +91 98765 43210</p>
-=======
-          <p className="text-base text-gray-400 hover:text-yellow-400"><a href="https://gmail.com">Email: support@restfultaxi.com</a></p>
-          <p className="text-base text-gray-400 hover:text-yellow-400"><a href="tel:+919876543210">Phone: +91 98765 43210</a></p>
->>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
           <div className="flex space-x-6 mt-4">
             <a href="https://meta.com/" className="hover:text-yellow-400">Facebook</a>
             <a href="https://twitter.com/" className="hover:text-yellow-400">Twitter</a>

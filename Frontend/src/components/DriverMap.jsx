@@ -14,10 +14,6 @@ import socket from "../utils/socket";
 esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurLXOHfTw7xS6Y4MDf0mhJNkT2Mx73me4-Emx56Jk88fkLPhIybELc4YyguRQWqLlTjbH0zIx8IedfU1ruipV6kMJhTGRS_z5yVL8CcBIIEUmyGKv1NeKE_DX8TpEEWn2heEvd0x_LHxOSGu9Y3fN3FFPPs2zmb_JdsOVi0bOjfOOWsr6lEKPHvo_qJWih_nDz021oh42hWKjHAql_uzo9EQ.AT1_bV6fTXOy";
 
 export default function DriverMap({ pickupCoords, dropoffCoords, onRouteInfo, rideId }) {
-<<<<<<< HEAD
-=======
-  const driverId = localStorage.getItem("driverId");
->>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
   const mapRef = useRef();
   const mapViewRef = useRef();
   const markerLayerRef = useRef();
@@ -222,13 +218,6 @@ export default function DriverMap({ pickupCoords, dropoffCoords, onRouteInfo, ri
       });
       if (driverMarkerRef.current) {
         driverMarkerRef.current.geometry = newPoint;
-<<<<<<< HEAD
-=======
-        socket.emit("driverLocationUpdate",{
-          rideId ,
-          coords:{lat:coords.lat , lng :coords.lng}
-        });
->>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
       }
     }, 1000);
 
@@ -260,14 +249,6 @@ export default function DriverMap({ pickupCoords, dropoffCoords, onRouteInfo, ri
 
       if (driverMarkerRef.current) {
         driverMarkerRef.current.geometry = newPoint;
-<<<<<<< HEAD
-=======
-         socket.emit("driverLocationUpdate", {
-    rideId,
-    driverId,
-    coords: { lat: coords.lat, lng: coords.lng }
-  });
->>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
       }
     }, 1000);
 
@@ -279,20 +260,8 @@ export default function DriverMap({ pickupCoords, dropoffCoords, onRouteInfo, ri
     !rideComplete ? (
       <div ref={mapRef} className="w-full h-[550px] rounded-xl shadow-lg" />) : (
       <div className="text-center text-green-500 text-lg font-bold mt-4">
-<<<<<<< HEAD
         Ride Completed SuccessFully!!
       </div>
-=======
-        <div>Ride Completed SuccessFully!!
-      </div>
-      <button
-      onClick={()=> window.location.reload()}
-      className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
-        See New Ride Request 
-      </button>
-      </div>
-
->>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
     )
 
   );

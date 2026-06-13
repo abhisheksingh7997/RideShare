@@ -7,26 +7,17 @@ export default function Signup() {
     username: "",
     email: "",
     password: "",
-<<<<<<< HEAD
-=======
-    phoneNo: "",
->>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
     role: "passenger",
     licenseNumber: "",
     vehicleNumber: "",
     vehicleType: "",
   });
 
-<<<<<<< HEAD
-=======
-  const [errors, setErrors] = useState({});
->>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
   const navigate = useNavigate();
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
-<<<<<<< HEAD
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -34,55 +25,6 @@ export default function Signup() {
       // here we are sending the form to backend .
       await axios.post("http://localhost:5000/api/auth/signup", form);
 
-=======
-  const validate = () => {
-    const newErrors = {};
-
-    if (/^\d/.test(form.username)) {
-      newErrors.username = "Username should not start with a number.";
-    }
-    if (/\d/.test(form.username)) {
-      newErrors.username = "Name should not contain numbers.";
-    }
-
-    if (form.password.length < 5) {
-      newErrors.password = "Password must be at least 5 characters.";
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-if (!emailRegex.test(form.email)) {
-  newErrors.email = "Enter a valid email address.";
-}
-
-    if (!/^[1-9]\d{9}$/.test(form.phoneNo)) {
-      newErrors.phoneNo = "Phone number must be 10 digits and not start with 0.";
-    }
-
-    if (form.role === "driver" && form.licenseNumber.length !== 16) {
-      newErrors.licenseNumber = "License number must be exactly 16 characters.";
-    }
-
-    if (form.role === "driver") {
-      if (!form.vehicleNumber.trim()) {
-        newErrors.vehicleNumber = "Vehicle number is required.";
-      }
-      if (!form.vehicleType) {
-        newErrors.vehicleType = "Vehicle type is required.";
-      }
-      
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!validate()) return;
-
-    try {
-      await axios.post("http://localhost:5000/api/auth/signup", form);
->>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
       alert("Signup successful! Please login.");
       navigate("/login");
     } catch (err) {
@@ -99,7 +41,6 @@ if (!emailRegex.test(form.email)) {
       >
         <h2 className="text-3xl font-bold text-center text-gray-800">Sign Up</h2>
 
-<<<<<<< HEAD
         <input
           name="username"
           placeholder="Enter Username"
@@ -107,21 +48,6 @@ if (!emailRegex.test(form.email)) {
           className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
-=======
-        <div>
-          <input
-            name="username"
-            placeholder="Enter Name"
-            onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-          {errors.username && (
-            <p className="text-red-500 text-sm">{errors.username}</p>
-          )}
-        </div>
-
->>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
         <input
           name="email"
           placeholder="Enter Email"
@@ -130,7 +56,6 @@ if (!emailRegex.test(form.email)) {
           className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
-<<<<<<< HEAD
         <input
           name="password"
           type="password"
@@ -147,37 +72,6 @@ if (!emailRegex.test(form.email)) {
           className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
-=======
-
-        <div>
-          <input
-            name="password"
-            type="password"
-            placeholder="Enter Password"
-            onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-          {errors.password && (
-            <p className="text-red-500 text-sm">{errors.password}</p>
-          )}
-        </div>
-
-        <div>
-          <input
-            name="phoneNo"
-            type="text"
-            placeholder="Enter Phone Number"
-            maxLength="10"
-            onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-          {errors.phoneNo && (
-            <p className="text-red-500 text-sm">{errors.phoneNo}</p>
-          )}
-        </div>
->>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
 
         <select
           name="role"
@@ -190,7 +84,6 @@ if (!emailRegex.test(form.email)) {
           <option value="driver">Driver</option>
         </select>
 
-<<<<<<< HEAD
         {/* Driver-specific fields */}
         {form.role === "driver" && (
           <>
@@ -219,52 +112,6 @@ if (!emailRegex.test(form.email)) {
               <option value="auto">Auto</option>
               <option value="bike">Bike</option>
             </select>
-=======
-        {form.role === "driver" && (
-          <>
-            <div>
-              <input
-                name="licenseNumber"
-                placeholder="License Number (16 chars)"
-                onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-              {errors.licenseNumber && (
-                <p className="text-red-500 text-sm">{errors.licenseNumber}</p>
-              )}
-            </div>
-
-            <div>
-              <input
-                name="vehicleNumber"
-                placeholder="Vehicle Number"
-                onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-              {errors.vehicleNumber && (
-                <p className="text-red-500 text-sm">{errors.vehicleNumber}</p>
-              )}
-            </div>
-
-            <div>
-              <select
-                name="vehicleType"
-                onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              >
-                <option value="">-- Select Vehicle Type --</option>
-                <option value="car">Car</option>
-                <option value="auto">Auto</option>
-                <option value="bike">Bike</option>
-              </select>
-              {errors.vehicleType && (
-                <p className="text-red-500 text-sm">{errors.vehicleType}</p>
-              )}
-            </div>
->>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
           </>
         )}
 

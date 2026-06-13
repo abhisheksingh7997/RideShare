@@ -8,74 +8,42 @@ import "swiper/css/pagination";
 const feedbacks = [
   {
     name: "Rober Downey",
-<<<<<<< HEAD
     image: "https://randomuser.me/api/portraits/men/75.jpg",
-=======
-    image: "https://img.freepik.com/premium-photo/profile-icon-white-background_941097-162022.jpg?w=2000",
->>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
     feedback: "Great experience! The ride was smooth, and the driver was very polite.",
   },
   {
     name: "Michelle Jones",
-<<<<<<< HEAD
     image: "https://randomuser.me/api/portraits/women/65.jpg",
-=======
-    image: "https://img.freepik.com/premium-photo/profile-icon-white-background_941097-162100.jpg?w=2000",
->>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
     feedback: "Very punctual service. Booking was easy and transparent pricing was a plus.",
   },
   {
     name: "Andrew Jackson",
-<<<<<<< HEAD
     image: "https://randomuser.me/api/portraits/men/44.jpg",
-=======
-    image: "https://img.freepik.com/premium-photo/profile-icon-white-background_941097-162022.jpg?w=2000",
->>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
     feedback: "I love how clean the vehicle was. Will definitely use the service again!",
   },
   {
     name: "Nicloe Wallace",
-<<<<<<< HEAD
     image: "https://randomuser.me/api/portraits/women/68.jpg",
-=======
-    image: "https://img.freepik.com/premium-photo/profile-icon-white-background_941097-162100.jpg?w=2000",
->>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
     feedback: "Affordable and reliable. Booked a ride for my parents and they were happy too.",
   },
   {
     name: "Chris Evans",
-<<<<<<< HEAD
     image: "https://randomuser.me/api/portraits/men/33.jpg",
-=======
-    image: "https://img.freepik.com/premium-photo/profile-icon-white-background_941097-162022.jpg?w=2000",
->>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
     feedback: "Customer support was quick and helpful. Solved my issue within minutes.",
   },
   {
     name: "Adelaide Kane",
-<<<<<<< HEAD
     image: "https://randomuser.me/api/portraits/women/56.jpg",
-=======
-    image: "https://img.freepik.com/premium-photo/profile-icon-white-background_941097-162100.jpg?w=2000",
->>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
     feedback: "The app UI is so easy to use, and the ride tracking feature is excellent.",
   },
   {
     name: "Harley",
-<<<<<<< HEAD
     image: "https://randomuser.me/api/portraits/men/23.jpg",
-=======
-    image: "https://img.freepik.com/premium-photo/profile-icon-white-background_941097-162022.jpg?w=2000",
->>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
     feedback: "Driver arrived on time and the pricing was exactly what was shown. Impressed!",
   },
   {
     name: "Brie Larson",
-<<<<<<< HEAD
     image: "https://randomuser.me/api/portraits/women/41.jpg",
-=======
-    image: "https://img.freepik.com/premium-photo/profile-icon-white-background_941097-162100.jpg?w=2000",
->>>>>>> 7476437d25ab8e76e719c941c9559acd75b72056
     feedback: "Loved the bike ride option – super quick and budget-friendly.",
   },
 ];
